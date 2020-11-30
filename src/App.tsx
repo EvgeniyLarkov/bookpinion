@@ -1,25 +1,27 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import { normalize } from 'react-style-reset/string';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import theme from './styles/theme';
+import Home from './pages/Home';
+import store from './redux/store';
 
-const App: React.FC<unknown> = () => {
-  const [counter, setCounter] = React.useState(0);
+const Normalize = createGlobalStyle`
+  ${normalize};
+`;
 
-  const handleClick = (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-    setCounter(counter + 1);
-  };
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p data-testid="counter">
-          {counter}
-        </p>
-        <p>
-          <button type="button" data-testid="button" onClick={handleClick}>Click me</button>
-        </p>
-      </header>
-    </div>
-  );
-};
+const App: React.FC = () => (
+  <React.StrictMode>
+    <Provider store={store}>
+      <Normalize />
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Home />
+        </BrowserRouter>
+      </ThemeProvider>
+    </Provider>
+  </React.StrictMode>
+);
 
 export default App;

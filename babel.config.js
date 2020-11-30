@@ -12,5 +12,13 @@ module.exports = {
     "@babel/preset-react",
     "@babel/preset-typescript",
   ],
-  plugins: [["@babel/transform-runtime"]],
+  plugins: [
+    ["@babel/transform-runtime"],
+    [
+      "babel-plugin-styled-components",
+      {
+        ssr: false,
+      },
+    ],
+  ],
 };
