@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Header from '../molecules/Header';
 import InputBlock from '../molecules/InputBlock';
 import Filter from '../molecules/Filter';
+import BookSection from '../molecules/BookSection';
 
 const Body = styled.div`
 height: 100vh;
@@ -14,6 +15,7 @@ const Home: React.FC = () => (
     <Header />
     <InputBlock />
     <Filter />
+    <BookSection />
   </Body>
 );
 

@@ -1,0 +1,9 @@
+{
+    "subTitle": "Share your opinion about favorite books",
+    "login": "Log in",
+    "inputBlock": {
+        "title": "Make a statement!",
+        "description": "About a book",
+        "bookAdvice": "choose a book"
+    }
+}

@@ -1,14 +1,23 @@
 import styled from 'styled-components';
 
-const TextBase = styled.p`
+interface TextProps {
+  readonly m?: string;
+  readonly p?: string | number;
+  readonly fontSize?: string;
+  readonly fontWeight?: number;
+  readonly fontStyle?: 'normal' | 'italic' | 'oblique';
+}
+
+const TextBase = styled.p<TextProps>`
+    display: inline-block;
     font-family: Roboto, Arial, sans-serif;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 18px;
+    font-size: ${(props) => props.fontSize || '18px'};
+    font-style: ${(props) => props.fontStyle || 'normal'};
+    font-weight: ${(props) => props.fontWeight || 300};
     color: ${(props) => props.theme.typography.main};
-    background: ${(props) => props.theme.palette.main};
-    resize: none;
-    border: none;
+    background: inherit;
+    padding: ${(props) => props.p || 0};
+    margin: ${(props) => props.m || 0};
 `;
 
 export default TextBase;

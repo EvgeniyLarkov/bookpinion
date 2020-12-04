@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Chip from '../atoms/Chip';
-import Title from '../atoms/TitleBase';
+import { Chip, TitleBase } from '../atoms';
 
 const Wrapper = styled.div`
     padding-top: 128px;
@@ -11,7 +10,7 @@ const Wrapper = styled.div`
 
 const Filter: React.FC = () => (
   <Wrapper>
-    <Title>Top books & opinions:</Title>
+    <TitleBase>Top books & opinions:</TitleBase>
     <div>
       <Chip>Russian</Chip>
     </div>

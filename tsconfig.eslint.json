@@ -5,6 +5,7 @@
     "src/**/*.tsx",
     "src/**/*.jsx",
     "src/**/*.js",
+    "public/**/*.js",
     "__tests__/**/*.jsx"
   ]
 }

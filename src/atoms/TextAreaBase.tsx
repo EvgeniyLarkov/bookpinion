@@ -9,6 +9,7 @@ const TextAreaBase = styled.textarea.attrs((props) => ({
     font-style: normal;
     font-weight: 300;
     font-size: 18px;
+    padding: 8px 4px;
     color: ${(props) => props.theme.typography.main};
     background: ${(props) => props.theme.palette.main};
     resize: none;

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import IconBlock from '../atoms/IconBlock';
-import Search from '../atoms/Search';
+import { useTranslation } from 'react-i18next';
+import { IconBlock, Search, TitleBase } from '../atoms';
 
 const StyledHeader = styled.header`
     display: flex;
@@ -17,36 +17,38 @@ const Wrapper = styled.div`
     margin: auto 0;
 `;
 
-const Title = styled.h1`
-    font-family: Roboto, Arial, sans-serif;
-    font-style: normal;
+const Title = styled(TitleBase)`
+    display: block;
     font-weight: 500;
     font-size: 48px;
-    line-height: 56px;
-    margin: 0;
-    color: #212529;
+    line-height: 1.2;
+    padding: 0;
 `;
-const SubTitle = styled.h3`
-    font-family: Roboto, Arial, sans-serif;
+
+const SubTitle = styled(TitleBase)`
+    display: block;
     font-style: italic;
     font-weight: 300;
     font-size: 18px;
-    margin: 0;
-    line-height: 21px;
-    color: #343A40;
+    line-height: 1.2;
+    padding: 0;
 `;
 
-const Header: React.FC = () => (
-  <StyledHeader>
-    <Wrapper>
-      <Title>Bookscore.</Title>
-      <SubTitle>Share your opinion about favorite books</SubTitle>
-    </Wrapper>
-    <Wrapper>
-      <Search />
-      <IconBlock />
-    </Wrapper>
-  </StyledHeader>
-);
+const Header: React.FC = () => {
+  const { t } = useTranslation();
+
+  return (
+    <StyledHeader>
+      <Wrapper>
+        <Title as="h1">Bookpinion.</Title>
+        <SubTitle as="h3">{t('subTitle')}</SubTitle>
+      </Wrapper>
+      <Wrapper>
+        <Search />
+        <IconBlock />
+      </Wrapper>
+    </StyledHeader>
+  );
+};
 
 export default Header;

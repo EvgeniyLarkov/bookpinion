@@ -1,46 +1,39 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import Language from '@material-ui/icons/Language';
 import Bookmarks from '@material-ui/icons/Bookmarks';
+import TextBase from './TextBase';
+import IconButton from './IconButton';
 
 const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
     padding-top: 16px;
     line-height: 27px;
-    div {
-        display: inline-block;
-        svg {
-            padding-left: 0;
-        }
-    }
     svg {
         vertical-align: middle;
-        padding-left: 12px;
     }
 `;
 
-const LinkP = styled.p`
-    font-family: Roboto, Arial, sans-serif;
-    font-style: normal;
-    font-weight: 300;
-    line-height: 35px;
-    font-size: 24px;
-    vertical-align: middle;
-    display: inline-block;
-    margin: 0;
-`;
+const IconBlock: React.FC = () => {
+  const { t } = useTranslation();
 
-const IconBlock: React.FC = () => (
-  <Wrapper>
-    <div>
-      <ExitToApp fontSize="large" />
-      <LinkP>Log in</LinkP>
-    </div>
-    <Language fontSize="large" />
-    <Bookmarks fontSize="large" />
-  </Wrapper>
-);
+  return (
+    <Wrapper>
+      <div>
+        <IconButton>
+          <>
+            <ExitToApp />
+            <TextBase p="0 12px 0 4px">{t('login')}</TextBase>
+          </>
+        </IconButton>
+      </div>
+      <IconButton><Language /></IconButton>
+      <IconButton><Bookmarks /></IconButton>
+    </Wrapper>
+  );
+};
 
 export default IconBlock;

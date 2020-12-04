@@ -1,17 +1,26 @@
-import React from 'react';
 import styled from 'styled-components';
 
-const Input = styled.input`
+interface InputProps {
+  readonly m?: string;
+  readonly p?: string | number;
+  readonly fontSize?: string;
+  readonly fontWeight?: number;
+  readonly fontStyle?: 'normal' | 'italic' | 'oblique';
+  readonly bgColor?: string;
+}
+
+const InputBase = styled.input<InputProps>`
+    display: inline-block;
     font-family: Roboto, Arial, sans-serif;
-    font-style: normal;
-    font-weight: 300;
-    line-height: 27px;
-    font-size: 18px;
-    margin: 0;
+    font-size: ${(props) => props.fontSize || '18px'};
+    font-style: ${(props) => props.fontStyle || 'normal'};
+    font-weight: ${(props) => props.fontWeight || 300};
+    line-height: 1.5;
     color: ${(props) => props.theme.typography.main};
+    padding: ${(props) => props.p || '0 8px'};
+    margin: ${(props) => props.m || 0};
+    background-color: ${(props) => (props.bgColor ? props.theme.palette[props.bgColor] : 'inherit')};
     border: none;
-    background-color: inherit;
 `;
-const InputBase: React.FC = () => <Input />;
 
 export default InputBase;

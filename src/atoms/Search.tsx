@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import SearchIcon from '@material-ui/icons/Search';
+import IconButton from './IconButton';
 
 const Input = styled.input`
     font-family: Roboto, Arial, sans-serif;
@@ -10,8 +11,8 @@ const Input = styled.input`
     font-size: 18px;
     margin: 0;
     color: ${(props) => props.theme.typography.main};
-    border: none;
     width: 150px;
+    border: none;
     background-color: inherit;
 `;
 
@@ -27,7 +28,7 @@ const StyledSearchIcon = styled(SearchIcon)`
 
 const Search: React.FC = () => (
   <Wrapper>
-    <StyledSearchIcon />
+    <IconButton><StyledSearchIcon /></IconButton>
     <Input />
   </Wrapper>
 );
