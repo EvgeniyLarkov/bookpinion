@@ -6,6 +6,7 @@ export interface IconButtonProps {
   children: React.ReactChildren | React.ReactChild;
   fontSize?: number;
   color?: string;
+  onClick?: () => void;
 }
 
 const StyledButton = styled(ButtonBase)`
@@ -25,8 +26,10 @@ const StyledButton = styled(ButtonBase)`
     }
 `;
 
-const IconButton:React.FC<IconButtonProps> = ({ children, fontSize, color }: IconButtonProps) => (
-  <StyledButton fontSize={fontSize} color={color}>
+const IconButton:React.FC<IconButtonProps> = ({
+  children, fontSize, color, onClick,
+}: IconButtonProps) => (
+  <StyledButton fontSize={fontSize} color={color} onClick={onClick}>
     {children}
   </StyledButton>
 );

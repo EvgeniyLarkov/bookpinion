@@ -5,5 +5,9 @@
         "title": "Make a statement!",
         "description": "About a book",
         "bookAdvice": "choose a book"
+    },
+    "loginForm": {
+        "usernamePh": "username",
+        "passwordPh": "password"
     }
 }

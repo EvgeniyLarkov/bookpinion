@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { IconBlock, Search, TitleBase } from '../atoms';
+import BaseModal from './Modal';
+import LoginForm from '../atoms/LoginForm';
 
 const StyledHeader = styled.header`
     display: flex;
@@ -46,6 +48,9 @@ const Header: React.FC = () => {
       <Wrapper>
         <Search />
         <IconBlock />
+        <BaseModal>
+          <LoginForm />
+        </BaseModal>
       </Wrapper>
     </StyledHeader>
   );

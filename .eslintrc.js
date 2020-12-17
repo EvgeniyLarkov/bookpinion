@@ -7,6 +7,9 @@ module.exports = {
     node: true,
     jest: true,
   },
+  rules: {
+    'no-param-reassign': ["error", { "props": false }] 
+  },
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",

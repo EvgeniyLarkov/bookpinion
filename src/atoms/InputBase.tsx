@@ -7,9 +7,16 @@ interface InputProps {
   readonly fontWeight?: number;
   readonly fontStyle?: 'normal' | 'italic' | 'oblique';
   readonly bgColor?: string;
+  readonly value?: string;
+  readonly placeholder?: string;
+  readonly onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputBase = styled.input<InputProps>`
+const InputBase = styled.input.attrs((props: InputProps) => ({
+  placeholder: props.placeholder || '',
+  value: props.value || '',
+  onChange: props.onChange,
+}))<InputProps>`
     display: inline-block;
     font-family: Roboto, Arial, sans-serif;
     font-size: ${(props) => props.fontSize || '18px'};
