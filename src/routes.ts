@@ -1,5 +1,5 @@
-const host = '';
+const host = 'http://127.0.0.1:3055';
 
 export default {
-  authPath: (): string => [host, 'api/auth'].join('/'),
+  authPath: (): string => [host, 'api/auth/'].join('/'),
 };

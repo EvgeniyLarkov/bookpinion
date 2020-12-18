@@ -10,6 +10,9 @@ const outputPath = join(process.cwd(), "/dist");
 const options = {
   hmr: isDev,
   static: outputPath,
+  /* middleware: (app, builtins) => {
+    app.use(builtins.proxy('/api', { target: 'https://localhost:3055' }));
+  } */
 };
 
 module.exports = {

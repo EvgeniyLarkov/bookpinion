@@ -9,6 +9,7 @@ import TextBase from './TextBase';
 import IconButton from './IconButton';
 import { AppDispatch } from '../redux/store';
 import { openModal } from '../redux/reducers/modal';
+import { ModalVariants } from '../redux/reducers/types';
 
 const Wrapper = styled.div`
     display: flex;
@@ -25,7 +26,7 @@ const IconBlock: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const handleLoginClick = () => {
-    dispatch(openModal());
+    dispatch(openModal({ label: t('login'), variant: ModalVariants.login }));
   };
 
   return (

@@ -3,10 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import CloseIcon from '@material-ui/icons/Close';
 import { Modal } from '@material-ui/core';
 import styled from 'styled-components';
-import { IconButton } from '../atoms';
+import {
+  IconButton, TitleBase, RegistrationForm, LoginForm,
+} from '../atoms';
 import { RootState } from '../redux/reducers';
 import { closeModal, ModalStates } from '../redux/reducers/modal';
 import { AppDispatch } from '../redux/store';
+import { ModalVariants } from '../redux/reducers/types';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -21,7 +24,7 @@ const Wrapper = styled.div`
   .inner-box__header {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding: 4px;
   }
   .inner-box__body {
@@ -31,16 +34,26 @@ const Wrapper = styled.div`
 
 const isOpen = (status: ModalStates): boolean => status === ModalStates.open;
 
-export interface ModalProps {
-  children: React.ReactChildren | React.ReactChild;
-}
-
-const BaseModal: React.FC<ModalProps> = ({ children }: ModalProps) => {
-  const { state: status } = useSelector(({ modal }: RootState) => modal);
+const BaseModal: React.FC = () => {
+  const { state: status, variant, label } = useSelector(({ modal }: RootState) => modal);
   const dispatch: AppDispatch = useDispatch();
 
   const handleCloseModal = () => {
     dispatch(closeModal());
+  };
+
+  const modalVariant = (type: ModalVariants | null) => {
+    switch (type) {
+      case ModalVariants.login:
+        return <LoginForm />;
+        break;
+      case ModalVariants.registration:
+        return <RegistrationForm />;
+        break;
+      default:
+        return <></>;
+        break;
+    }
   };
 
   return (
@@ -51,10 +64,11 @@ const BaseModal: React.FC<ModalProps> = ({ children }: ModalProps) => {
       <Wrapper>
         <div className="inner-box">
           <div className="inner-box__header">
+            <TitleBase fontSize="24px" fontWeight={300} p="0 12px">{label}</TitleBase>
             <IconButton onClick={handleCloseModal}><CloseIcon /></IconButton>
           </div>
           <div className="inner-box__body">
-            {children}
+            {modalVariant(variant)}
           </div>
         </div>
       </Wrapper>

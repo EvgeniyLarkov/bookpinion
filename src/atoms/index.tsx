@@ -9,3 +9,5 @@ export { default as TextBase } from './TextBase';
 export { default as TitleBase } from './TitleBase';
 export { default as IconBlock } from './IconBlock';
 export { default as IconButton } from './IconButton';
+export { default as RegistrationForm } from './RegistrationForm';
+export { default as LoginForm } from './LoginForm';

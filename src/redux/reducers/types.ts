@@ -15,9 +15,14 @@ export enum ProfileStates {
   'logged',
 }
 
+export enum ModalVariants {
+  'login',
+  'registration',
+}
+
 export interface ProfileInfo {
   username: string | null
-  name: string | 'guest'
+  name: string
   surname: string | null
   status: ProfileStatusStates
 }

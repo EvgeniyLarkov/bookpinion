@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 import { login } from '../../api/userApi';
 import { ServerErrorResponse, ServerSuccessResponse } from '../../api/types';
@@ -6,20 +6,19 @@ import {
   Languages, LoginData, ProfileInfo, ProfileInterface, ProfileStates, ProfileStatusStates,
 } from './types';
 
-const loginThunk = createAsyncThunk<ServerSuccessResponse<ProfileInfo>, LoginData, {
+export const loginByUsername = createAsyncThunk<ServerSuccessResponse<ProfileInfo>, LoginData, {
   rejectValue: ServerErrorResponse
 }>(
-  'profile/fetchById',
-  async ({ username, password }, { getState, rejectWithValue }) => {
+  'profile/loginByUsername',
+  async ({ username, password }, { rejectWithValue }) => {
     try {
-      const { profile } = getState() as { profile: ProfileInterface };
+      // const { profile } = getState() as { profile: ProfileInterface };
 
-      if (profile.state === ProfileStates.pending) {
+      /* if (profile.state === ProfileStates.pending) {
         return rejectWithValue({ status: 'pending', errors: ['Requesting data'] });
-      }
+      } */
 
       const response = await login({ username, password });
-
       return response;
     } catch (err) {
       const error: AxiosError<ServerErrorResponse> = err;
@@ -48,33 +47,26 @@ const initialState: ProfileInterface = {
 const profileSlice = createSlice({
   name: 'profile',
   initialState,
-  reducers: {
-    login(state, action: PayloadAction<ProfileInfo>) {
-      const { username, status } = action.payload;
-      state.username = username;
-      state.status = status;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(loginThunk.fulfilled, (state, { payload }) => {
+    builder.addCase(loginByUsername.fulfilled, (state, { payload }) => {
       const { name, surname, username } = payload.message;
       state.state = ProfileStates.logged;
       state.username = username;
       state.name = name;
       state.surname = surname;
     });
-    builder.addCase(loginThunk.rejected, (state, action) => {
+    builder.addCase(loginByUsername.rejected, (state, action) => {
       if (action.payload !== undefined) {
-        state.error = action.payload.errors;
+        state.error = [...action.payload.errors];
+      } else {
+        state.error = [action.error.message ?? 'Error'];
       }
-      state.error = [action.error.message ?? 'Error'];
     });
-    builder.addCase(loginThunk.pending, (state) => {
+    builder.addCase(loginByUsername.pending, (state) => {
       state.state = ProfileStates.pending;
     });
   },
 });
-
-export const { login: loginAction } = profileSlice.actions;
 
 export default profileSlice.reducer;

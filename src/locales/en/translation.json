@@ -1,6 +1,7 @@
 {
     "subTitle": "Share your opinion about favorite books",
     "login": "Log in",
+    "register": "Register",
     "inputBlock": {
         "title": "Make a statement!",
         "description": "About a book",
@@ -8,6 +9,18 @@
     },
     "loginForm": {
         "usernamePh": "username",
-        "passwordPh": "password"
+        "passwordPh": "password",
+        "loginButton": "log in"
+    },
+    "registrationForm": {
+        "firstname": "First name",
+        "firstnamePh": "Bill",
+        "lastname": "Last name",
+        "lastnamePh": "Gates",
+        "password": "Password",
+        "passwordPh": "password",
+        "passwordRepeat": "Repeat password",
+        "username": "Select a username",
+        "usernamePh": "billgates2000"
     }
 }
