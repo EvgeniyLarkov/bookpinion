@@ -1,3 +1,5 @@
+import { ValidationError } from '../redux/reducers/types';
+
 export interface ServerSuccessResponse<T> {
   status: string
   message: T
@@ -7,10 +9,15 @@ export interface ServerSuccessResponse<T> {
 export interface ServerErrorResponse {
   status: string
   message?: string
-  errors: string[]
+  errors: ValidationError[]
 }
 
 export interface BaseUserInfo {
   username: string
   password: string
+}
+
+export interface ExtendedUserInfo extends BaseUserInfo {
+  name: string
+  surname: string
 }

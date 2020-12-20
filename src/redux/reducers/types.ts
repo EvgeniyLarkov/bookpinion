@@ -25,16 +25,16 @@ export interface ProfileInfo {
   name: string
   surname: string | null
   status: ProfileStatusStates
+  token: string | null
 }
 
 export interface ProfileInterface extends ProfileInfo {
   language: Languages
   state: ProfileStates
-  token: string | null
-  error: string[]
+  error: ValidationError[]
 }
 
-export interface LoginData {
-  username: string
-  password: string
+export interface ValidationError {
+  param: string,
+  msg: string
 }

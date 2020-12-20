@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { ProfileInfo } from '../redux/reducers/types';
 import routes from '../routes';
-import { BaseUserInfo, ServerSuccessResponse } from './types';
+import { BaseUserInfo, ServerSuccessResponse, ExtendedUserInfo } from './types';
 
 const login = async (userdata: BaseUserInfo): Promise<ServerSuccessResponse<ProfileInfo>> => {
   const data = await axios.post<ServerSuccessResponse<ProfileInfo>>(routes.authPath(), userdata)
@@ -9,6 +9,12 @@ const login = async (userdata: BaseUserInfo): Promise<ServerSuccessResponse<Prof
   return data;
 };
 
-export { login };
+const register = async (
+  userdata: ExtendedUserInfo,
+): Promise<ServerSuccessResponse<ProfileInfo>> => {
+  const data = await axios.post<ServerSuccessResponse<ProfileInfo>>(routes.profilePath(), userdata)
+    .then((response) => response.data);
+  return data;
+};
 
-export default 'fdasf';
+export { login, register };

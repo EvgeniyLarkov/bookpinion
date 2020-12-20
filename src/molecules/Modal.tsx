@@ -20,15 +20,15 @@ const Wrapper = styled.div`
   .inner-box {
     background-color: ${(props) => props.theme.palette.main};
     border-radius: 4px;
+    padding: 8px 32px;
   }
   .inner-box__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 4px;
   }
   .inner-box__body {
-    padding: 12px;
+    padding: 12px 0;
   }
 `;
 
@@ -64,7 +64,7 @@ const BaseModal: React.FC = () => {
       <Wrapper>
         <div className="inner-box">
           <div className="inner-box__header">
-            <TitleBase fontSize="24px" fontWeight={300} p="0 12px">{label}</TitleBase>
+            <TitleBase fontSize="24px" fontWeight={300}>{label}</TitleBase>
             <IconButton onClick={handleCloseModal}><CloseIcon /></IconButton>
           </div>
           <div className="inner-box__body">

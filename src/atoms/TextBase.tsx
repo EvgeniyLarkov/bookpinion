@@ -6,6 +6,7 @@ interface TextProps {
   readonly fontSize?: string;
   readonly fontWeight?: number;
   readonly fontStyle?: 'normal' | 'italic' | 'oblique';
+  readonly color?: string;
 }
 
 const TextBase = styled.p<TextProps>`
@@ -14,7 +15,7 @@ const TextBase = styled.p<TextProps>`
     font-size: ${(props) => props.fontSize || '18px'};
     font-style: ${(props) => props.fontStyle || 'normal'};
     font-weight: ${(props) => props.fontWeight || 300};
-    color: ${(props) => props.theme.typography.main};
+    color: ${(props) => props.color || props.theme.typography.main};
     background: inherit;
     padding: ${(props) => props.p || 0};
     margin: ${(props) => props.m || 0};

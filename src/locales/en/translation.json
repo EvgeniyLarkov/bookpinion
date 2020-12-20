@@ -21,6 +21,13 @@
         "passwordPh": "password",
         "passwordRepeat": "Repeat password",
         "username": "Select a username",
-        "usernamePh": "billgates2000"
+        "usernamePh": "billgates2000",
+        "usernameTip": "Username should contain only numbers and english letters. Minimum length - {{min}}, maximum length - {{max}}"
+    },
+    "validationErrors": {
+        "isEmpty": "{{field}} should not be empty",
+        "isAlphanumeric": "{{field}} should only contain alphanumeric characters",
+        "isLength": "{{field}} length should be between {{min}} and {{max}} characters",
+        "notMatch": "{{field1}} does not match {{field2}}"
     }
 }

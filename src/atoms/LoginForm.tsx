@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { LinearProgress } from '@material-ui/core';
 import { AppDispatch } from '../redux/store';
 import InputBase from './InputBase';
 import ButtonBase from './ButtonBase';
 import { loginByUsername } from '../redux/reducers/profile';
 import TextBase from './TextBase';
 import { openModal } from '../redux/reducers/modal';
-import { ModalVariants } from '../redux/reducers/types';
+import { ModalVariants, ProfileStates } from '../redux/reducers/types';
+import { RootState } from '../redux/reducers';
 
 const Wrapper = styled.div`
     display: flex;
@@ -22,9 +24,13 @@ const Wrapper = styled.div`
 
 const LoginForm: React.FC = () => {
   const { t } = useTranslation();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
   const dispatch: AppDispatch = useDispatch();
+
+  const state = useSelector(({ profile }: RootState) => profile.state);
 
   const handleUsernameChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(ev.target.value);
@@ -47,6 +53,7 @@ const LoginForm: React.FC = () => {
       <InputBase value={username} placeholder={t('loginForm.usernamePh')} onChange={handleUsernameChange} />
       <InputBase value={password} placeholder={t('loginForm.passwordPh')} onChange={handlePasswordChange} />
       <div className="loginform__actions">
+        {state === ProfileStates.pending && <LinearProgress /> }
         <ButtonBase onClick={handleSubmit}>
           <TextBase p="8px 0" fontWeight={400}>
             {t('loginForm.loginButton')}

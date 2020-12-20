@@ -1,24 +1,41 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
-import { login } from '../../api/userApi';
-import { ServerErrorResponse, ServerSuccessResponse } from '../../api/types';
+import { login, register } from '../../api/userApi';
 import {
-  Languages, LoginData, ProfileInfo, ProfileInterface, ProfileStates, ProfileStatusStates,
+  BaseUserInfo, ExtendedUserInfo, ServerErrorResponse, ServerSuccessResponse,
+} from '../../api/types';
+import {
+  Languages, ProfileInfo, ProfileInterface, ProfileStates, ProfileStatusStates, ValidationError,
 } from './types';
 
-export const loginByUsername = createAsyncThunk<ServerSuccessResponse<ProfileInfo>, LoginData, {
+export const loginByUsername = createAsyncThunk<ServerSuccessResponse<ProfileInfo>, BaseUserInfo, {
   rejectValue: ServerErrorResponse
 }>(
   'profile/loginByUsername',
   async ({ username, password }, { rejectWithValue }) => {
     try {
-      // const { profile } = getState() as { profile: ProfileInterface };
-
-      /* if (profile.state === ProfileStates.pending) {
-        return rejectWithValue({ status: 'pending', errors: ['Requesting data'] });
-      } */
-
       const response = await login({ username, password });
+      return response;
+    } catch (err) {
+      const error: AxiosError<ServerErrorResponse> = err;
+      if (error.response !== undefined) {
+        return rejectWithValue(error.response.data);
+      }
+      if (error.request !== undefined) {
+        return rejectWithValue(error.request);
+      }
+      throw err;
+    }
+  },
+);
+
+export const registerUser = createAsyncThunk<ServerSuccessResponse<ProfileInfo>, ExtendedUserInfo, {
+  rejectValue: ServerErrorResponse
+}>(
+  'profile/register',
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await register(userData);
       return response;
     } catch (err) {
       const error: AxiosError<ServerErrorResponse> = err;
@@ -47,26 +64,58 @@ const initialState: ProfileInterface = {
 const profileSlice = createSlice({
   name: 'profile',
   initialState,
-  reducers: {},
+  reducers: {
+    setErrors(state, action: PayloadAction<ValidationError[]>) {
+      console.log(action);
+      state.error = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(loginByUsername.fulfilled, (state, { payload }) => {
-      const { name, surname, username } = payload.message;
+      const {
+        name, surname, username, token,
+      } = payload.message;
       state.state = ProfileStates.logged;
       state.username = username;
       state.name = name;
       state.surname = surname;
+      state.token = token;
     });
     builder.addCase(loginByUsername.rejected, (state, action) => {
       if (action.payload !== undefined) {
         state.error = [...action.payload.errors];
       } else {
-        state.error = [action.error.message ?? 'Error'];
+        state.error = [{ msg: action.error.message || 'Connection error', param: 'request' }];
       }
+      state.state = ProfileStates.idle;
     });
     builder.addCase(loginByUsername.pending, (state) => {
       state.state = ProfileStates.pending;
     });
+    builder.addCase(registerUser.fulfilled, (state, { payload }) => {
+      const {
+        name, surname, username, token,
+      } = payload.message;
+      state.state = ProfileStates.logged;
+      state.username = username;
+      state.name = name;
+      state.surname = surname;
+      state.token = token;
+    });
+    builder.addCase(registerUser.rejected, (state, action) => {
+      if (action.payload !== undefined) {
+        state.error = [...action.payload.errors];
+      } else {
+        state.error = [{ msg: action.error.message || 'Connection error', param: 'request' }];
+      }
+      state.state = ProfileStates.idle;
+    });
+    builder.addCase(registerUser.pending, (state) => {
+      state.state = ProfileStates.pending;
+    });
   },
 });
+
+export const { setErrors } = profileSlice.actions;
 
 export default profileSlice.reducer;
