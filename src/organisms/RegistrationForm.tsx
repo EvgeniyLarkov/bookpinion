@@ -3,15 +3,18 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinearProgress } from '@material-ui/core';
 import styled from 'styled-components';
-import TextBase from './TextBase';
-import ButtonBase from './ButtonBase';
+import TextBase from '../atoms/TextBase';
+import ButtonBase from '../atoms/ButtonBase';
 import { AppDispatch } from '../redux/store';
-import { registerUser, setErrors } from '../redux/reducers/profile';
-import { RootState } from '../redux/reducers';
-import { ProfileStates } from '../redux/reducers/types';
+import { registerUser, setErrors } from '../redux/ducks/profile';
+import { RootState } from '../redux/ducks';
+import { ProfileFields, ProfileStates } from '../redux/ducks/types';
 import validate from '../validations';
 import C from '../validations/constants';
 import FieldWithLabel from './FieldWithLabel';
+
+// TO-DO
+// 1. Добавить селектор для нормализованных ошибок
 
 const Wrapper = styled.div`
     display: grid;
@@ -20,7 +23,7 @@ const Wrapper = styled.div`
     row-gap: 32px;
 `;
 
-const isEmpty = (value: string[] | undefined) => value === undefined || value.length === 0;
+const isEmpty = (value: undefined | unknown[]) => value === undefined || value.length === 0;
 
 const RegistrationForm: React.FC = () => {
   const { t } = useTranslation();
@@ -49,13 +52,20 @@ const RegistrationForm: React.FC = () => {
   };
 
   const handleRegistrationConfirm = () => {
-    const usernameErrors = validate('username', username);
-    const firstnameErrors = validate('firstname', firstname);
-    const lastnameErrors = validate('lastname', lastname);
-    const passwordErrors = validate('password', password);
+    const usernameErrors = validate(ProfileFields.username, username);
+    const firstnameErrors = validate(ProfileFields.firstname, firstname);
+    const lastnameErrors = validate(ProfileFields.lastname, lastname);
+    const passwordErrors = validate(ProfileFields.password, password);
+    const passwordRepeatErrors = validate('passwordRepeat', passwordRepeat, { data: password, field: ProfileFields.password });
 
-    const allErrors = [...usernameErrors, ...firstnameErrors, ...lastnameErrors, ...passwordErrors];
-    if (allErrors.length !== 0) {
+    const allErrors = [
+      ...usernameErrors,
+      ...firstnameErrors,
+      ...lastnameErrors,
+      ...passwordErrors,
+      ...passwordRepeatErrors,
+    ];
+    if (!isEmpty(allErrors)) {
       dispatch(setErrors(allErrors));
     } else {
       dispatch(registerUser({
@@ -63,7 +73,7 @@ const RegistrationForm: React.FC = () => {
       }));
     }
   };
-  console.log(normalizedErrors);
+
   return (
     <Wrapper>
       {state === ProfileStates.pending && <LinearProgress /> }
@@ -80,6 +90,8 @@ const RegistrationForm: React.FC = () => {
         placeholder={t('registrationForm.lastnamePh')}
         value={lastname}
         onChange={handleFieldChange(setLastname)}
+        tooltipContent={normalizedErrors.lastname}
+        isValid={isEmpty(normalizedErrors.lastname)}
       />
       <FieldWithLabel
         label={t('registrationForm.username')}
@@ -97,12 +109,16 @@ const RegistrationForm: React.FC = () => {
         placeholder={t('registrationForm.passwordPh')}
         value={password}
         onChange={handleFieldChange(setPassword)}
+        tooltipContent={normalizedErrors.password}
+        isValid={isEmpty(normalizedErrors.password)}
       />
       <FieldWithLabel
         label={t('registrationForm.passwordRepeat')}
         placeholder={t('registrationForm.passwordPh')}
         value={passwordRepeat}
         onChange={handleFieldChange(setPasswordRepeat)}
+        tooltipContent={normalizedErrors.passwordRepeat}
+        isValid={isEmpty(normalizedErrors.passwordRepeat)}
       />
       <ButtonBase onClick={handleRegistrationConfirm}>
         <TextBase p="8px 0" fontWeight={400}>

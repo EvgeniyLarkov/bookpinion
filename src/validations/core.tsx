@@ -7,20 +7,23 @@ export interface ValidatorPipelineInterface {
   errors: string[]
 }
 
+// TO-DO
+// 1. i18n убрать из ядра
+// 2. Добавить опциональный аргумент к lenghtValidation
+
 export const defaultValidations = (
   input: ValidatorPipelineInterface,
 ): ValidatorPipelineInterface => {
   const { data, errors, field } = input;
-  let defaultErrors: string[] = [];
+  let defaultErrors: string[] = [...errors];
 
   if (validator.isEmpty(data)) {
-    defaultErrors = [...errors, i18n.t('validationErrors.isEmpty', { field })];
+    defaultErrors = [...defaultErrors, i18n.t('validationErrors.isEmpty', { field })];
   }
   if (!validator.isAlphanumeric(data)) {
-    defaultErrors = [...errors, i18n.t('validationErrors.isAlphanumeric', { field })];
+    defaultErrors = [...defaultErrors, i18n.t('validationErrors.isAlphanumeric', { field })];
   }
-
-  return { data, errors: [...errors, ...defaultErrors], field };
+  return { data, errors: defaultErrors, field };
 };
 
 export const lengthValidation = (options: { min: number, max: number }) => (
@@ -28,13 +31,12 @@ export const lengthValidation = (options: { min: number, max: number }) => (
 ): ValidatorPipelineInterface => {
   const { min, max } = options;
   const { data, errors, field } = input;
-  let defaultErrors: string[] = [];
-
+  let defaultErrors: string[] = [...errors];
   if (!validator.isLength(data, { min, max })) {
-    defaultErrors = [...errors, i18n.t('validationErrors.isLength', { field, min, max })];
+    defaultErrors = [...defaultErrors, i18n.t('validationErrors.isLength', { field, min, max })];
   }
 
-  return { data, errors: [...errors, ...defaultErrors], field };
+  return { data, errors: [...defaultErrors], field };
 };
 
 export const compareValidation = (options?: { data: string, field: string }) => (
@@ -48,11 +50,11 @@ export const compareValidation = (options?: { data: string, field: string }) => 
 
   const { data: data2, field: field2 } = options;
 
-  let defaultErrors: string[] = [];
+  let defaultErrors: string[] = [...errors];
 
   if (!validator.matches(data, data2)) {
-    defaultErrors = [...errors, i18n.t('validationErrors.notMatch', { field1: field, field2 })];
+    defaultErrors = [...defaultErrors, i18n.t('validationErrors.notMatch', { field1: field, field2 })];
   }
 
-  return { data, errors: [...errors, ...defaultErrors], field };
+  return { data, errors: [...defaultErrors], field };
 };

@@ -20,6 +20,13 @@ export enum ModalVariants {
   'registration',
 }
 
+export enum ProfileFields {
+  username = 'username',
+  firstname = 'firstname',
+  lastname = 'lastname',
+  password = 'password',
+}
+
 export interface ProfileInfo {
   username: string | null
   name: string

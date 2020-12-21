@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Card, ChangePageBlock } from '../atoms';
+import { Card } from '../atoms';
+import ChangePageBlock from '../organisms/ChangePageBlock';
 
 const Grid = styled.section`
     padding: 32px 128px;

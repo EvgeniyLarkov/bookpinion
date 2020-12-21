@@ -4,8 +4,8 @@ import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import FirstPageIcon from '@material-ui/icons/FirstPage';
 import LastPageIcon from '@material-ui/icons/LastPage';
-import InputBase from './InputBase';
-import IconButton from './IconButton';
+import InputBase from '../atoms/InputBase';
+import IconButton from '../atoms/IconButton';
 
 const Container = styled.div`
     display: flex;

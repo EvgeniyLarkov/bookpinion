@@ -5,11 +5,11 @@ import { useDispatch } from 'react-redux';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import Language from '@material-ui/icons/Language';
 import Bookmarks from '@material-ui/icons/Bookmarks';
-import TextBase from './TextBase';
-import IconButton from './IconButton';
+import TextBase from '../atoms/TextBase';
+import IconButton from '../atoms/IconButton';
 import { AppDispatch } from '../redux/store';
-import { openModal } from '../redux/reducers/modal';
-import { ModalVariants } from '../redux/reducers/types';
+import { openModal } from '../redux/ducks/modal';
+import { ModalVariants } from '../redux/ducks/types';
 
 const Wrapper = styled.div`
     display: flex;

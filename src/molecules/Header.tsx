@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { IconBlock, Search, TitleBase } from '../atoms';
+import { Search, TitleBase } from '../atoms';
 import BaseModal from './Modal';
+import { IconBlock } from '../organisms';
 
 const StyledHeader = styled.header`
     display: flex;

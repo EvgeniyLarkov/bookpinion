@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ProfileInfo } from '../redux/reducers/types';
+import { ProfileInfo } from '../redux/ducks/types';
 import routes from '../routes';
 import { BaseUserInfo, ServerSuccessResponse, ExtendedUserInfo } from './types';
 

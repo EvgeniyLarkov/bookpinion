@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
-import TextBase from './TextBase';
+import TextBase from '../atoms/TextBase';
 import mainTheme from '../styles/theme';
 
 const Wrapper = styled.div`

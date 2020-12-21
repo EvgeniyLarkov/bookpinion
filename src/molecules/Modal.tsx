@@ -3,13 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import CloseIcon from '@material-ui/icons/Close';
 import { Modal } from '@material-ui/core';
 import styled from 'styled-components';
-import {
-  IconButton, TitleBase, RegistrationForm, LoginForm,
-} from '../atoms';
-import { RootState } from '../redux/reducers';
-import { closeModal, ModalStates } from '../redux/reducers/modal';
+import { IconButton, TitleBase } from '../atoms';
+import { RootState } from '../redux/ducks';
+import { closeModal, ModalStates } from '../redux/ducks/modal';
 import { AppDispatch } from '../redux/store';
-import { ModalVariants } from '../redux/reducers/types';
+import { ModalVariants } from '../redux/ducks/types';
+import { LoginForm, RegistrationForm } from '../organisms';
 
 const Wrapper = styled.div`
   position: absolute;

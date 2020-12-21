@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import TextBase from './TextBase';
+import TextBase from '../atoms/TextBase';
 import Tooltip from './Tooltip';
-import InputBase from './InputBase';
+import InputBase from '../atoms/InputBase';
 import mainTheme from '../styles/theme';
 
 export interface FieldWithLabelProps {

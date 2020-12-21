@@ -1,4 +1,4 @@
-import { ValidationError } from '../redux/reducers/types';
+import { ValidationError } from '../redux/ducks/types';
 
 export interface ServerSuccessResponse<T> {
   status: string

@@ -4,13 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { LinearProgress } from '@material-ui/core';
 import { AppDispatch } from '../redux/store';
-import InputBase from './InputBase';
-import ButtonBase from './ButtonBase';
-import { loginByUsername } from '../redux/reducers/profile';
-import TextBase from './TextBase';
-import { openModal } from '../redux/reducers/modal';
-import { ModalVariants, ProfileStates } from '../redux/reducers/types';
-import { RootState } from '../redux/reducers';
+import InputBase from '../atoms/InputBase';
+import ButtonBase from '../atoms/ButtonBase';
+import { loginByUsername } from '../redux/ducks/profile';
+import TextBase from '../atoms/TextBase';
+import { openModal } from '../redux/ducks/modal';
+import { ModalVariants, ProfileStates } from '../redux/ducks/types';
+import { RootState } from '../redux/ducks';
+
+// TO-DO
+// 1. Сделать как в регистрации
 
 const Wrapper = styled.div`
     display: flex;

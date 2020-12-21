@@ -1,54 +1,17 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AxiosError } from 'axios';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { login, register } from '../../api/userApi';
+import { asyncFetchActionCreator } from '../../api/asyncActions';
 import {
-  BaseUserInfo, ExtendedUserInfo, ServerErrorResponse, ServerSuccessResponse,
-} from '../../api/types';
-import {
-  Languages, ProfileInfo, ProfileInterface, ProfileStates, ProfileStatusStates, ValidationError,
+  Languages, ProfileInterface, ProfileStates, ProfileStatusStates, ValidationError,
 } from './types';
 
-export const loginByUsername = createAsyncThunk<ServerSuccessResponse<ProfileInfo>, BaseUserInfo, {
-  rejectValue: ServerErrorResponse
-}>(
-  'profile/loginByUsername',
-  async ({ username, password }, { rejectWithValue }) => {
-    try {
-      const response = await login({ username, password });
-      return response;
-    } catch (err) {
-      const error: AxiosError<ServerErrorResponse> = err;
-      if (error.response !== undefined) {
-        return rejectWithValue(error.response.data);
-      }
-      if (error.request !== undefined) {
-        return rejectWithValue(error.request);
-      }
-      throw err;
-    }
-  },
-);
+// TO-DO:
+// 2. Возможно привести к одному виду интерфейс пользователя в редьюсере, компоненте и беке
+// 3. Исправить краш при отсутсвии соединения с беком
+// 4. Добавить ошибки с бека
 
-export const registerUser = createAsyncThunk<ServerSuccessResponse<ProfileInfo>, ExtendedUserInfo, {
-  rejectValue: ServerErrorResponse
-}>(
-  'profile/register',
-  async (userData, { rejectWithValue }) => {
-    try {
-      const response = await register(userData);
-      return response;
-    } catch (err) {
-      const error: AxiosError<ServerErrorResponse> = err;
-      if (error.response !== undefined) {
-        return rejectWithValue(error.response.data);
-      }
-      if (error.request !== undefined) {
-        return rejectWithValue(error.request);
-      }
-      throw err;
-    }
-  },
-);
+export const loginByUsername = asyncFetchActionCreator('profile/loginByUsername', login);
+export const registerUser = asyncFetchActionCreator('profile/registerUser', register);
 
 const initialState: ProfileInterface = {
   language: Languages.en,
@@ -66,7 +29,6 @@ const profileSlice = createSlice({
   initialState,
   reducers: {
     setErrors(state, action: PayloadAction<ValidationError[]>) {
-      console.log(action);
       state.error = action.payload;
     },
   },
