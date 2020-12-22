@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Card } from '../atoms';
 import ChangePageBlock from '../organisms/ChangePageBlock';
+import { RootState } from '../redux/ducks';
+import { AppDispatch } from '../redux/store';
+import { fetchBooks } from '../redux/ducks/books';
 
 const Grid = styled.section`
     padding: 32px 128px;
@@ -45,18 +49,29 @@ const BookImg = styled.img.attrs((props) => ({ src: props.src }))`
     height: 100%;
 `;
 
-const BookSection: React.FC = () => (
-  <>
-    <Grid>
-      <Card className="article-1" bookName="He;llo" userName="Popo" text="Great book" reaction="positive" />
-      <BookImg className="book-1" src="https://img.chaconne.ru/img/2037771_849884.jpg" />
-      <BookImg className="book-2" src="https://img.chaconne.ru/img/2037771_849884.jpg" />
-      <Card className="article-2" bookName="He;llo" userName="Popo" text="Great book" />
-      <Card className="article-3" bookName="He;llo" userName="Popo" text="Great book" reaction="negative" />
-      <BookImg className="book-3" src="https://img.chaconne.ru/img/2037771_849884.jpg" />
-    </Grid>
-    <ChangePageBlock />
-  </>
-);
+const BookSection: React.FC = () => {
+  const dispatch: AppDispatch = useDispatch();
+
+  const { state, data, allIDs } = useSelector(({ books }: RootState) => books);
+  console.log(data, allIDs, state);
+
+  useEffect(() => {
+    dispatch(fetchBooks('Rc0MzgEACAAJ'));
+  }, []);
+
+  return (
+    <>
+      <Grid>
+        <Card className="article-1" bookName="He;llo" userName="Popo" text="Great book" reaction="positive" />
+        <BookImg className="book-1" src="https://img.chaconne.ru/img/2037771_849884.jpg" />
+        <BookImg className="book-2" src="https://img.chaconne.ru/img/2037771_849884.jpg" />
+        <Card className="article-2" bookName="He;llo" userName="Popo" text="Great book" />
+        <Card className="article-3" bookName="He;llo" userName="Popo" text="Great book" reaction="negative" />
+        <BookImg className="book-3" src="https://img.chaconne.ru/img/2037771_849884.jpg" />
+      </Grid>
+      <ChangePageBlock />
+    </>
+  );
+};
 
 export default BookSection;

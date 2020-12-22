@@ -1,4 +1,10 @@
-import { ValidationError } from '../redux/ducks/types';
+import { ServerError, ValidationError } from '../redux/ducks/types';
+
+export enum ErrorStatus {
+  connerr = 'connection error',
+  sererr = 'server errror',
+  valerr = 'validation error',
+}
 
 export interface ServerSuccessResponse<T> {
   status: string
@@ -6,10 +12,34 @@ export interface ServerSuccessResponse<T> {
   token?: string
 }
 
-export interface ServerErrorResponse {
-  status: string
+export interface ServerErrorResponse<T> {
+  status: T extends ErrorStatus.valerr
+    ? ErrorStatus.valerr
+    : T extends ErrorStatus.connerr
+      ? ErrorStatus.connerr
+      : ErrorStatus.sererr
   message?: string
-  errors: ValidationError[]
+  errors: T extends ErrorStatus.valerr
+    ? ValidationError[]
+    : ServerError
+}
+
+export function isValidationError(
+  obj: ServerErrorResponse<ErrorStatus>,
+): obj is ServerErrorResponse<ErrorStatus.valerr> {
+  return obj.status === ErrorStatus.valerr;
+}
+
+export function isConnectionError(
+  obj: ServerErrorResponse<ErrorStatus>,
+): obj is ServerErrorResponse<ErrorStatus.connerr> {
+  return obj.status === ErrorStatus.connerr;
+}
+
+export function isServerError(
+  obj: ServerErrorResponse<ErrorStatus>,
+): obj is ServerErrorResponse<ErrorStatus.sererr> {
+  return obj.status === ErrorStatus.sererr;
 }
 
 export interface BaseUserInfo {

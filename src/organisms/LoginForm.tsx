@@ -2,27 +2,24 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { LinearProgress } from '@material-ui/core';
+import { isEmpty } from 'lodash';
 import { AppDispatch } from '../redux/store';
-import InputBase from '../atoms/InputBase';
 import ButtonBase from '../atoms/ButtonBase';
-import { loginByUsername } from '../redux/ducks/profile';
+import { loginByUsername, setErrors } from '../redux/ducks/profile';
 import TextBase from '../atoms/TextBase';
 import { openModal } from '../redux/ducks/modal';
-import { ModalVariants, ProfileStates } from '../redux/ducks/types';
+import { ModalVariants, ProfileFields } from '../redux/ducks/types';
 import { RootState } from '../redux/ducks';
+import validate from '../validations';
+import FieldWithLabel from './FieldWithLabel';
 
 // TO-DO
 // 1. Сделать как в регистрации
 
 const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    .loginform__actions {
-      display: flex;
-      margin-top: 16px;
-      flex-direction: column;
-    }
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 16px;
 `;
 
 const LoginForm: React.FC = () => {
@@ -33,14 +30,20 @@ const LoginForm: React.FC = () => {
 
   const dispatch: AppDispatch = useDispatch();
 
-  const state = useSelector(({ profile }: RootState) => profile.state);
+  const { error } = useSelector(({ profile }: RootState) => profile);
 
-  const handleUsernameChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(ev.target.value);
-  };
+  const normalizedErrors = error.reduce((acc: { [index: string]: string[] }, { msg, param }) => {
+    if (acc[param] === undefined) {
+      return { ...acc, [param]: [msg] };
+    }
+    return { ...acc, [param]: [...acc[param], msg] };
+  },
+  {});
 
-  const handlePasswordChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(ev.target.value);
+  const handleFieldChange = (setter: typeof setUsername) => (
+    ev: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setter(ev.target.value);
   };
 
   const handleRegisterClick = () => {
@@ -48,26 +51,46 @@ const LoginForm: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    dispatch(loginByUsername({ username, password }));
+    const usernameErrors = validate(ProfileFields.username, username);
+    const passwordErrors = validate(ProfileFields.password, password);
+
+    const allErrors = [
+      ...usernameErrors,
+      ...passwordErrors,
+    ];
+    if (!isEmpty(allErrors)) {
+      dispatch(setErrors(allErrors));
+    } else {
+      dispatch(loginByUsername({ username, password }));
+    }
   };
 
   return (
     <Wrapper>
-      <InputBase value={username} placeholder={t('loginForm.usernamePh')} onChange={handleUsernameChange} />
-      <InputBase value={password} placeholder={t('loginForm.passwordPh')} onChange={handlePasswordChange} />
-      <div className="loginform__actions">
-        {state === ProfileStates.pending && <LinearProgress /> }
-        <ButtonBase onClick={handleSubmit}>
-          <TextBase p="8px 0" fontWeight={400}>
-            {t('loginForm.loginButton')}
-          </TextBase>
-        </ButtonBase>
-        <ButtonBase onClick={handleRegisterClick}>
-          <TextBase p="8px 0" fontWeight={400}>
-            {t('register')}
-          </TextBase>
-        </ButtonBase>
-      </div>
+      <FieldWithLabel
+        placeholder={t('loginForm.usernamePh')}
+        value={username}
+        onChange={handleFieldChange(setUsername)}
+        tooltipContent={normalizedErrors.username}
+        isValid={isEmpty(normalizedErrors.username)}
+      />
+      <FieldWithLabel
+        placeholder={t('loginForm.passwordPh')}
+        value={password}
+        onChange={handleFieldChange(setPassword)}
+        tooltipContent={normalizedErrors.password}
+        isValid={isEmpty(normalizedErrors.password)}
+      />
+      <ButtonBase onClick={handleSubmit}>
+        <TextBase p="8px 0" fontWeight={400}>
+          {t('loginForm.loginButton')}
+        </TextBase>
+      </ButtonBase>
+      <ButtonBase onClick={handleRegisterClick}>
+        <TextBase p="8px 0" fontWeight={400}>
+          {t('register')}
+        </TextBase>
+      </ButtonBase>
     </Wrapper>
   );
 };

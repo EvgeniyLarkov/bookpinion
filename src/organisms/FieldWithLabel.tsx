@@ -6,7 +6,7 @@ import InputBase from '../atoms/InputBase';
 import mainTheme from '../styles/theme';
 
 export interface FieldWithLabelProps {
-  label: string
+  label?: string
   placeholder: string
   value: string,
   tooltipContent?: string[] | string,
@@ -38,9 +38,7 @@ const FieldWithLabel: React.FC<FieldWithLabelProps> = ({
 
   return (
     <StyledField>
-      <TextBase>
-        {label}
-      </TextBase>
+      { label && <TextBase>{label}</TextBase> }
       <InputBase
         value={value}
         onChange={handler}

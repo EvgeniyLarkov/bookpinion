@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinearProgress } from '@material-ui/core';
+import { isEmpty } from 'lodash';
 import styled from 'styled-components';
 import TextBase from '../atoms/TextBase';
 import ButtonBase from '../atoms/ButtonBase';
@@ -15,6 +16,7 @@ import FieldWithLabel from './FieldWithLabel';
 
 // TO-DO
 // 1. Добавить селектор для нормализованных ошибок
+// 2. При закрытии окна/изменении поля стереть все ошибки
 
 const Wrapper = styled.div`
     display: grid;
@@ -22,8 +24,6 @@ const Wrapper = styled.div`
     column-gap: 16px;
     row-gap: 32px;
 `;
-
-const isEmpty = (value: undefined | unknown[]) => value === undefined || value.length === 0;
 
 const RegistrationForm: React.FC = () => {
   const { t } = useTranslation();

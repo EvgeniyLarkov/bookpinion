@@ -4,6 +4,7 @@ import { asyncFetchActionCreator } from '../../api/asyncActions';
 import {
   Languages, ProfileInterface, ProfileStates, ProfileStatusStates, ValidationError,
 } from './types';
+import { isValidationError } from '../../api/types';
 
 // TO-DO:
 // 2. Возможно привести к одному виду интерфейс пользователя в редьюсере, компоненте и беке
@@ -43,16 +44,14 @@ const profileSlice = createSlice({
       state.surname = surname;
       state.token = token;
     });
-    builder.addCase(loginByUsername.rejected, (state, action) => {
-      if (action.payload !== undefined) {
-        state.error = [...action.payload.errors];
-      } else {
-        state.error = [{ msg: action.error.message || 'Connection error', param: 'request' }];
+    builder.addCase(loginByUsername.rejected, (state, { payload }) => {
+      if (payload && isValidationError(payload)) {
+        state.error = payload.errors;
       }
-      state.state = ProfileStates.idle;
     });
     builder.addCase(loginByUsername.pending, (state) => {
       state.state = ProfileStates.pending;
+      state.error = [];
     });
     builder.addCase(registerUser.fulfilled, (state, { payload }) => {
       const {
@@ -64,16 +63,15 @@ const profileSlice = createSlice({
       state.surname = surname;
       state.token = token;
     });
-    builder.addCase(registerUser.rejected, (state, action) => {
-      if (action.payload !== undefined) {
-        state.error = [...action.payload.errors];
-      } else {
-        state.error = [{ msg: action.error.message || 'Connection error', param: 'request' }];
+    builder.addCase(registerUser.rejected, (state, { payload }) => {
+      if (payload && isValidationError(payload)) {
+        state.error = payload.errors;
       }
       state.state = ProfileStates.idle;
     });
     builder.addCase(registerUser.pending, (state) => {
       state.state = ProfileStates.pending;
+      state.error = [];
     });
   },
 });

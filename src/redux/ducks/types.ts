@@ -15,6 +15,17 @@ export enum ProfileStates {
   'logged',
 }
 
+export enum BooksStates {
+  'idle',
+  'pending',
+  'fetched',
+}
+
+export enum ErrorsStates {
+  'idle',
+  'full',
+}
+
 export enum ModalVariants {
   'login',
   'registration',
@@ -41,7 +52,37 @@ export interface ProfileInterface extends ProfileInfo {
   error: ValidationError[]
 }
 
+export interface BookInterface {
+  authors: string[]
+  title: string
+}
+
+export interface ErrorsInterface {
+  state: ErrorsStates
+  data: ServerError
+}
+
+export interface ExtendedBookInterface<K> extends BookInterface {
+  authors: string[]
+  id: K
+  title: string
+  description: string
+  imageLinks: { small: string, normal: string }
+  link: string
+}
+
+export type AllIDs = string;
+
+export interface BooksInterface {
+  state: BooksStates,
+  data: { [K in AllIDs]: ExtendedBookInterface<K>},
+  allIDs: AllIDs[],
+  error: ValidationError[] | ServerError,
+}
+
 export interface ValidationError {
-  param: string,
+  param: string
   msg: string
 }
+
+export type ServerError = string[];
