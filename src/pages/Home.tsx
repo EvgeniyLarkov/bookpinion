@@ -4,9 +4,10 @@ import Header from '../molecules/Header';
 import InputBlock from '../molecules/InputBlock';
 import Filter from '../molecules/Filter';
 import BookSection from '../molecules/BookSection';
+import { Notification } from '../organisms';
 
 const Body = styled.div`
-height: 100vh;
+  height: 100vh;
   background: ${(props) => props.theme.background};
 `;
 
@@ -16,6 +17,7 @@ const Home: React.FC = () => (
     <InputBlock />
     <Filter />
     <BookSection />
+    <Notification />
   </Body>
 );
 

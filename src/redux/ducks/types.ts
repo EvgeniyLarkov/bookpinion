@@ -59,7 +59,7 @@ export interface BookInterface {
 
 export interface ErrorsInterface {
   state: ErrorsStates
-  data: ServerError
+  data: ServerError[]
 }
 
 export interface ExtendedBookInterface<K> extends BookInterface {
@@ -77,7 +77,7 @@ export interface BooksInterface {
   state: BooksStates,
   data: { [K in AllIDs]: ExtendedBookInterface<K>},
   allIDs: AllIDs[],
-  error: ValidationError[] | ServerError,
+  error: ValidationError[] | ServerError[],
 }
 
 export interface ValidationError {
@@ -85,4 +85,7 @@ export interface ValidationError {
   msg: string
 }
 
-export type ServerError = string[];
+export type ServerError = {
+  msg: string
+  [id: string]: string
+};

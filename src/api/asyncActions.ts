@@ -1,5 +1,6 @@
 import { AsyncThunk, createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
+import { uniqueId } from 'lodash';
 import { ErrorStatus, ServerErrorResponse } from './types';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -22,7 +23,13 @@ export function asyncFetchActionCreator<U, R>(
         if (error.response !== undefined) {
           return rejectWithValue(error.response.data);
         }
-        return rejectWithValue({ status: ErrorStatus.connerr, errors: ['unable to connect to the remote server'] });
+        return rejectWithValue({
+          status: ErrorStatus.connerr,
+          errors: {
+            id: uniqueId('connerr'),
+            msg: 'unable to connect to the remote server',
+          },
+        });
       }
     },
   );
