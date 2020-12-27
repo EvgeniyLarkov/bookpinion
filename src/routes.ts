@@ -4,4 +4,5 @@ export default {
   authPath: (): string => [host, 'api/auth/'].join('/'),
   profilePath: (): string => [host, 'user/'].join('/'),
   bookPath: (id?: string): string => [host, `book/${id || ''}`].join('/'),
+  articlePath: (id?: string): string => [host, `article/${id || ''}`].join('/'),
 };

@@ -21,6 +21,12 @@ export enum BooksStates {
   'fetched',
 }
 
+export enum ArticlesStates {
+  'idle',
+  'pending',
+  'fetched',
+}
+
 export enum ErrorsStates {
   'idle',
   'full',
@@ -71,11 +77,29 @@ export interface ExtendedBookInterface<K> extends BookInterface {
   link: string
 }
 
+export interface ArticleInterface<K> {
+  id: K
+  username: string
+  title: string
+  author: string
+  bookId: string
+  article: string
+  rating: number
+  createdAt: Date
+}
+
 export type AllIDs = string;
 
 export interface BooksInterface {
   state: BooksStates,
   data: { [K in AllIDs]: ExtendedBookInterface<K>},
+  allIDs: AllIDs[],
+  error: ValidationError[] | ServerError[],
+}
+
+export interface ArticlesInterface {
+  state: ArticlesStates,
+  data: { [K in AllIDs]: ArticleInterface<K>},
   allIDs: AllIDs[],
   error: ValidationError[] | ServerError[],
 }

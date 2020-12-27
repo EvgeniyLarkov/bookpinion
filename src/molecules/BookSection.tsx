@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Card } from '../atoms';
 import ChangePageBlock from '../organisms/ChangePageBlock';
-import { RootState } from '../redux/ducks';
 import { AppDispatch } from '../redux/store';
-import { fetchBooks } from '../redux/ducks/books';
+import { getBookById } from '../redux/ducks/books';
+import { ExtendedBookInterface, ArticleInterface } from '../redux/ducks/types';
 
 const Grid = styled.section`
     padding: 32px 128px;
@@ -16,30 +16,12 @@ const Grid = styled.section`
     grid-template-areas: 
       "a1 b2 a3"
       "b1 b2 b3"
-      "b1 a2 b3";
+      "b1 a2 b3"
+      "a4 b5 a6"
+      "b4 b5 b6"
+      "b4 a5 b6"
+      ;
     grid-gap: 12px;
-
-    .article-1 {
-      grid-area: a1;
-    }
-
-    .article-2 {
-      grid-area: a2;
-    }
-
-    .article-3 {
-      grid-area: a3;
-    }
-
-    .book-1 {
-      grid-area: b1;
-    }
-    .book-2 {
-      grid-area: b2;
-    }
-    .book-3 {
-      grid-area: b3;
-    }
 `;
 
 const BookImg = styled.img.attrs((props) => ({ src: props.src }))`
@@ -49,25 +31,41 @@ const BookImg = styled.img.attrs((props) => ({ src: props.src }))`
     height: 100%;
 `;
 
-const BookSection: React.FC = () => {
+export interface BookSectionInterface {
+  books: ExtendedBookInterface<string>[]
+  articles: ArticleInterface<string>[]
+}
+
+const BookSection: React.FC<BookSectionInterface> = (
+  {
+    books,
+    articles,
+  }: BookSectionInterface,
+) => {
   const dispatch: AppDispatch = useDispatch();
 
-  const { state, data, allIDs } = useSelector(({ books }: RootState) => books);
-  console.log(data, allIDs, state);
-
   useEffect(() => {
-    dispatch(fetchBooks('Rc0MzgEACAAJ'));
+    dispatch(getBookById('Rc0MzgEACAAJ'));
   }, []);
 
   return (
     <>
       <Grid>
-        <Card className="article-1" bookName="He;llo" userName="Popo" text="Great book" reaction="positive" />
-        <BookImg className="book-1" src="https://img.chaconne.ru/img/2037771_849884.jpg" />
-        <BookImg className="book-2" src="https://img.chaconne.ru/img/2037771_849884.jpg" />
-        <Card className="article-2" bookName="He;llo" userName="Popo" text="Great book" />
-        <Card className="article-3" bookName="He;llo" userName="Popo" text="Great book" reaction="negative" />
-        <BookImg className="book-3" src="https://img.chaconne.ru/img/2037771_849884.jpg" />
+        {articles.map((article, index) => (
+          <Card
+            className={`grid-area: a${index}`}
+            label={article.author}
+            username={article.username}
+            article={article.article}
+            reaction={article.rating}
+          />
+        ))}
+        {books.map((book, index) => (
+          <BookImg
+            className={`grid-area: b${index}`}
+            src={book.imageLinks.normal}
+          />
+        ))}
       </Grid>
       <ChangePageBlock />
     </>

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { isServerError, isConnectionError } from '../../api/types';
-import { fetchBooks } from './books';
+import { getBookById } from './books';
 import { loginByUsername, registerUser } from './profile';
 import { ErrorsInterface, ErrorsStates } from './types';
 
@@ -22,7 +22,7 @@ const errorsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchBooks.rejected, (state, { payload }) => {
+    builder.addCase(getBookById.rejected, (state, { payload }) => {
       if (payload && (isServerError(payload) || isConnectionError(payload))) {
         const message = `${payload.status.toLocaleUpperCase()}: ${payload.errors.msg}`;
         state.data.push({ msg: message, id: payload.errors.id });

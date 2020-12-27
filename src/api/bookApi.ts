@@ -3,7 +3,7 @@ import { ServerSuccessResponse } from './types';
 import { AllIDs, ExtendedBookInterface } from '../redux/ducks/types';
 import routes from '../routes';
 
-const getBookById = async (
+const fetchBookById = async (
   input: AllIDs,
 ): Promise<ServerSuccessResponse<ExtendedBookInterface<AllIDs>>> => {
   const data = await axios
@@ -13,4 +13,4 @@ const getBookById = async (
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export { getBookById };
+export { fetchBookById };
