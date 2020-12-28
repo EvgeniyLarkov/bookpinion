@@ -2,6 +2,7 @@
     "subTitle": "Share your opinion about favorite books",
     "login": "Log in",
     "register": "Register",
+    "hello": "Hello, {{name}}",
     "inputBlock": {
         "title": "Make a statement!",
         "description": "About a book",

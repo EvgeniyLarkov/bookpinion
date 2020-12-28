@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { uniqueId } from 'lodash';
 import { Card } from '../atoms';
 import ChangePageBlock from '../organisms/ChangePageBlock';
 import { AppDispatch } from '../redux/store';
 import { getBookById } from '../redux/ducks/books';
-import { ExtendedBookInterface, ArticleInterface } from '../redux/ducks/types';
+import { ExtendedBookInterface, ExtendedArticleInterface } from '../redux/ducks/types';
 
 const Grid = styled.section`
     padding: 32px 128px;
@@ -33,7 +34,7 @@ const BookImg = styled.img.attrs((props) => ({ src: props.src }))`
 
 export interface BookSectionInterface {
   books: ExtendedBookInterface<string>[]
-  articles: ArticleInterface<string>[]
+  articles: ExtendedArticleInterface<string>[]
 }
 
 const BookSection: React.FC<BookSectionInterface> = (
@@ -58,12 +59,14 @@ const BookSection: React.FC<BookSectionInterface> = (
             username={article.username}
             article={article.article}
             reaction={article.rating}
+            key={uniqueId('article')}
           />
         ))}
         {books.map((book, index) => (
           <BookImg
             className={`grid-area: b${index}`}
             src={book.imageLinks.normal}
+            key={uniqueId('book')}
           />
         ))}
       </Grid>

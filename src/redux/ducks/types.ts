@@ -44,6 +44,12 @@ export enum ProfileFields {
   password = 'password',
 }
 
+export enum ArticleFields {
+  article = 'article',
+}
+
+export type AllIDs = string;
+
 export interface ProfileInfo {
   username: string | null
   name: string
@@ -63,11 +69,6 @@ export interface BookInterface {
   title: string
 }
 
-export interface ErrorsInterface {
-  state: ErrorsStates
-  data: ServerError[]
-}
-
 export interface ExtendedBookInterface<K> extends BookInterface {
   authors: string[]
   id: K
@@ -77,19 +78,6 @@ export interface ExtendedBookInterface<K> extends BookInterface {
   link: string
 }
 
-export interface ArticleInterface<K> {
-  id: K
-  username: string
-  title: string
-  author: string
-  bookId: string
-  article: string
-  rating: number
-  createdAt: Date
-}
-
-export type AllIDs = string;
-
 export interface BooksInterface {
   state: BooksStates,
   data: { [K in AllIDs]: ExtendedBookInterface<K>},
@@ -97,11 +85,25 @@ export interface BooksInterface {
   error: ValidationError[] | ServerError[],
 }
 
+export interface ArticleInterface {
+  bookId: string
+  article: string
+  rating: number
+}
+
+export interface ExtendedArticleInterface<K> extends ArticleInterface {
+  id: K
+  username: string
+  title: string
+  author: string
+  createdAt: Date
+}
+
 export interface ArticlesInterface {
   state: ArticlesStates,
-  data: { [K in AllIDs]: ArticleInterface<K>},
+  data: { [K in AllIDs]: ExtendedArticleInterface<K>},
   allIDs: AllIDs[],
-  error: ValidationError[] | ServerError[],
+  error: ValidationError[],
 }
 
 export interface ValidationError {
@@ -113,3 +115,8 @@ export type ServerError = {
   msg: string
   [id: string]: string
 };
+
+export interface ErrorsInterface {
+  state: ErrorsStates
+  data: ServerError[]
+}

@@ -24,6 +24,7 @@ const FieldWithLabel: React.FC<FieldWithLabelProps> = ({
   label, placeholder, value, onChange: handler, tooltipContent, isValid = true,
 }: FieldWithLabelProps) => {
   const [visible, setVisible] = useState(false);
+
   const handleMouseOver = () => {
     if (tooltipContent !== undefined) {
       setVisible(true);

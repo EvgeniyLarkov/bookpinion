@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 const TextAreaBase = styled.textarea.attrs((props) => ({
-  rows: props.rows || '3',
-  cols: props.cols || '40',
+  rows: props.rows || 3,
+  cols: props.cols || 40,
   autoComplete: props.autoComplete,
 }))`
     font-family: Roboto, Arial, sans-serif;

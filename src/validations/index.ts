@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { ProfileFields, ValidationError } from '../redux/ducks/types';
+import { ProfileFields, ValidationError, ArticleFields } from '../redux/ducks/types';
 import C from './constants';
 import { compareValidation, defaultValidations, lengthValidation } from './core';
 
@@ -35,13 +35,18 @@ export default (
     case ProfileFields.password:
       return pipe(
         preset,
-        defaultValidations,
         lengthValidation({ min: C.MIN_PASSWORD_CHARS, max: C.MAX_PASSWORD_CHARS }),
       ).errors.map((errors) => ({ param: field, msg: errors }));
     case 'passwordRepeat':
       return pipe(
         preset,
         compareValidation(options),
+      ).errors.map((errors) => ({ param: field, msg: errors }));
+    case ArticleFields.article:
+      return pipe(
+        preset,
+        defaultValidations,
+        lengthValidation({ min: C.MIN_ARTICLE_CHARS, max: C.MAX_ARTICLE_CHARS }),
       ).errors.map((errors) => ({ param: field, msg: errors }));
     default:
       return [];

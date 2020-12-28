@@ -8,7 +8,7 @@ import BookSection from '../molecules/BookSection';
 import { Notification } from '../organisms';
 import { AppDispatch } from '../redux/store';
 import { RootState } from '../redux/ducks';
-import { fetchArticles } from '../redux/ducks/articles';
+// import { fetchArticles } from '../redux/ducks/articles';
 import { getBookById } from '../redux/ducks/books';
 
 const Body = styled.div`
@@ -26,9 +26,9 @@ const Home: React.FC = () => {
   const articles = articlesIDs.map((id) => articlesData[id]);
   const books = bookIDs.map((id) => booksData[id]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     dispatch(fetchArticles());
-  }, []);
+  }, []); */
 
   useEffect(() => {
     const ids = articlesIDs.map(((item) => articlesData[item].bookId));

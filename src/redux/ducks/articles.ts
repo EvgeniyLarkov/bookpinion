@@ -1,8 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { asyncFetchActionCreator } from '../../api/asyncActions';
-import { getArticles } from '../../api/articleApi';
+import { getArticles, postArticle } from '../../api/articleApi';
 import { isValidationError } from '../../api/types';
-import { ArticlesInterface, ArticlesStates } from './types';
+import { ArticlesInterface, ArticlesStates, ValidationError } from './types';
 
 const initialState: ArticlesInterface = {
   state: ArticlesStates.idle,
@@ -12,11 +12,16 @@ const initialState: ArticlesInterface = {
 };
 
 export const fetchArticles = asyncFetchActionCreator('articles/fetchArticles', getArticles);
+export const publishArticle = asyncFetchActionCreator('articles/postArticle', postArticle);
 
-const booksSlice = createSlice({
+const articlesSlice = createSlice({
   name: 'articles',
   initialState,
-  reducers: {},
+  reducers: {
+    setArticleError(state, action: PayloadAction<ValidationError[]>) {
+      state.error = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchArticles.fulfilled, (state, { payload }) => {
       const {
@@ -35,7 +40,14 @@ const booksSlice = createSlice({
     builder.addCase(fetchArticles.pending, (state) => {
       state.state = ArticlesStates.pending;
     });
+    builder.addCase(publishArticle.rejected, (state, { payload }) => {
+      if (payload && isValidationError(payload)) {
+        state.error.push(...payload.errors);
+      }
+    });
   },
 });
 
-export default booksSlice.reducer;
+export const { setArticleError } = articlesSlice.actions;
+
+export default articlesSlice.reducer;

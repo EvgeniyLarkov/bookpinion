@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   top: calc(100% + 16px);
   left: 50%;
   transform: translateX(-50%);
-  display: ${(props: WrapperProps) => ((props.visible !== undefined && props.visible) ? 'block' : 'none')};
+  display: ${(props: WrapperProps) => ((props.visible) ? 'block' : 'none')};
   transition: all 0.3 cubic-bezier(.25,.8,.25,1);
   z-index: 100;
 
@@ -40,7 +40,7 @@ export interface TooltipProps extends WrapperProps {
   children: string | string[];
 }
 
-const Chip: React.FC<TooltipProps> = ({ children, visible }: TooltipProps) => (
+const Chip: React.FC<TooltipProps> = ({ children, visible = true }: TooltipProps) => (
   <Wrapper visible={visible}>
     <div className="inner">
       {Array.isArray(children)
