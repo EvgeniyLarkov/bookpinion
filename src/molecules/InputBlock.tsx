@@ -6,7 +6,7 @@ import { isEmpty } from 'lodash';
 import SendIcon from '@material-ui/icons/Send';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import {
-  IconButton, InputBase, TextAreaBase, TextBase, TitleBase,
+  IconButton, SelectBase, TextAreaBase, TextBase, TitleBase,
 } from '../atoms';
 import validate from '../validations';
 import { ArticleFields } from '../redux/ducks/types';
@@ -53,7 +53,7 @@ const InputBlock: React.FC = () => {
 
   const [article, setArticle] = useState('');
   // const [rating, setRating] = useState(0);
-  const [selectedBook, setSelectedBook] = useState('');
+  const [bookId, setBookId] = useState('');
 
   const { error } = useSelector(({ articles }: RootState) => articles);
 
@@ -69,8 +69,8 @@ const InputBlock: React.FC = () => {
     setArticle(ev.target.value);
   };
 
-  const handleSetBook = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedBook(ev.target.value);
+  const handleSetBook = (id: string) => {
+    setBookId(id);
   };
 
   const handleSendArticle = () => {
@@ -79,7 +79,7 @@ const InputBlock: React.FC = () => {
     if (!isEmpty(allErrors)) {
       dispatch(setArticleError(allErrors));
     } else {
-      dispatch(publishArticle({ article, bookId: selectedBook, rating: 10 }));
+      dispatch(publishArticle({ article, bookId, rating: 10 }));
     }
   };
 
@@ -89,12 +89,11 @@ const InputBlock: React.FC = () => {
         <Title>{t('inputBlock.title')}</Title>
         <div>
           <Description>{t('inputBlock.description')}</Description>
-          <InputBase
-            bgColor="main"
-            m="0 12px"
+          <SelectBase
+            options={[{ label: 'hello', data: [{ title: 'Mytitle', value: 'myvalue' }, { title: 'Alex Pushkin', value: 'myvalue2' }, { title: 'Yeeee boiiii', value: 'myvalue3' }] }]}
             placeholder={t('inputBlock.bookAdvice')}
-            onChange={handleSetBook}
-            value={selectedBook}
+            handler={handleSetBook}
+            withAutocomplete
           />
         </div>
         <Wrapper>

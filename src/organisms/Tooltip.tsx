@@ -15,7 +15,6 @@ const Wrapper = styled.div`
   left: 50%;
   transform: translateX(-50%);
   display: ${(props: WrapperProps) => ((props.visible) ? 'block' : 'none')};
-  transition: all 0.3 cubic-bezier(.25,.8,.25,1);
   z-index: 100;
 
   .inner {

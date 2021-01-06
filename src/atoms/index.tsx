@@ -7,3 +7,4 @@ export { default as TextAreaBase } from './TextAreaBase';
 export { default as TextBase } from './TextBase';
 export { default as TitleBase } from './TitleBase';
 export { default as IconButton } from './IconButton';
+export { default as SelectBase } from './SelectBase';

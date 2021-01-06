@@ -10,7 +10,7 @@ export interface ButtonProps {
 
 const StyledButton = styled(MaterialButton)`
       && {
-          display: inline-block;
+          display: 'inline-block';
           border-radius: ${(props: ButtonProps) => `${props.borderRadius || 8}px`};
           background-color: ${(props) => props.theme.palette.main};
           &:hover {
