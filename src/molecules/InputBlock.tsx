@@ -1,19 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
+import axios from 'axios';
 import SendIcon from '@material-ui/icons/Send';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
+import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
+import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
 import {
-  IconButton, SelectBase, TextAreaBase, TextBase, TitleBase,
+  IconButton, Option, SelectBase, SelectExtended, TextAreaBase, TextBase, TitleBase,
 } from '../atoms';
+import { OptionsType } from '../atoms/SelectExtended';
 import validate from '../validations';
 import { ArticleFields } from '../redux/ducks/types';
 import { AppDispatch } from '../redux/store';
 import { publishArticle, setArticleError } from '../redux/ducks/articles';
 import { Tooltip } from '../organisms';
 import { RootState } from '../redux/ducks';
+import C from '../validations/constants';
+import routes from '../routes';
 
 const Outer = styled.div`
     width: 828px;
@@ -45,15 +51,30 @@ const Wrapper = styled.div`
     background-color: ${(props) => props.theme.palette.main};
     height: 100%;
     margin-bottom: 16px;
+
+    .container {
+      position: relative;
+    }
 `;
+
+type BookPreviewType = {
+  _id: string;
+  authors: string[];
+  title: string;
+};
+
+const PostitveIcon = styled(InsertEmoticonIcon)`&& { font-size: 50px }`;
+const NeutralIcon = styled(SentimentSatisfiedIcon)`&& { font-size: 50px }`;
+const NegativeIcon = styled(SentimentVeryDissatisfiedIcon)`&& { font-size: 50px }`;
 
 const InputBlock: React.FC = () => {
   const { t } = useTranslation();
   const dispatch: AppDispatch = useDispatch();
 
   const [article, setArticle] = useState('');
-  // const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(C.MAX_BOOK_RATING / 2);
   const [bookId, setBookId] = useState('');
+  const [previewData, setPreviewData] = useState<OptionsType[]>([{ label: 'default', title: 'pending', value: 'null' }]);
 
   const { error } = useSelector(({ articles }: RootState) => articles);
 
@@ -69,9 +90,31 @@ const InputBlock: React.FC = () => {
     setArticle(ev.target.value);
   };
 
+  const handleSetRating = (value: number) => () => {
+    setRating(value);
+  };
+
   const handleSetBook = (id: string) => {
     setBookId(id);
   };
+
+  useEffect(() => {
+    const fetchPreviewData = async () => {
+      const response = await axios.get(routes.bookPreviewPath());
+      const { message }: { message: BookPreviewType[] } = response.data;
+      const sortByAuthors = message.reduce<OptionsType[]>((acc, { _id, title, authors }) => {
+        const sorted = authors.map((author: string) => ({
+          label: author,
+          value: _id,
+          title,
+        }));
+        return [...acc, ...sorted];
+      }, []);
+
+      setPreviewData(sortByAuthors);
+    };
+    fetchPreviewData();
+  }, []);
 
   const handleSendArticle = () => {
     const articleTextErrors = validate(ArticleFields.article, article);
@@ -89,8 +132,8 @@ const InputBlock: React.FC = () => {
         <Title>{t('inputBlock.title')}</Title>
         <div>
           <Description>{t('inputBlock.description')}</Description>
-          <SelectBase
-            options={[{ label: 'hello', data: [{ title: 'Mytitle', value: 'myvalue' }, { title: 'Alex Pushkin', value: 'myvalue2' }, { title: 'Yeeee boiiii', value: 'myvalue3' }] }]}
+          <SelectExtended
+            options={previewData}
             placeholder={t('inputBlock.bookAdvice')}
             handler={handleSetBook}
             withAutocomplete
@@ -101,9 +144,28 @@ const InputBlock: React.FC = () => {
             onChange={handleSetArticleText}
             value={article}
           />
-          <IconButton fontSize={50}>
-            <InsertEmoticonIcon />
-          </IconButton>
+          <div className="container">
+            <SelectBase title={(
+              <IconButton fontSize={50}>
+                {(rating === C.MAX_BOOK_RATING && <PostitveIcon />)
+                || (rating === C.MAX_BOOK_RATING / 2 && <NeutralIcon />)
+                || <NegativeIcon />}
+              </IconButton>
+            )}
+            >
+              <>
+                <Option handler={handleSetRating(C.MAX_BOOK_RATING)}>
+                  <PostitveIcon />
+                </Option>
+                <Option handler={handleSetRating(C.MAX_BOOK_RATING / 2)}>
+                  <NeutralIcon />
+                </Option>
+                <Option handler={handleSetRating(C.MIN_BOOK_RATING)}>
+                  <NegativeIcon />
+                </Option>
+              </>
+            </SelectBase>
+          </div>
           <IconButton
             fontSize={50}
             color="#1C9CE3"

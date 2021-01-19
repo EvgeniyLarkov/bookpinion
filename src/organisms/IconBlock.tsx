@@ -38,7 +38,7 @@ const IconBlock: React.FC = () => {
         <IconButton onClick={handleLoginClick}>
           <>
             <ExitToApp />
-            <TextBase p="0 12px 0 4px">{t('login')}</TextBase>
+            <TextBase p="0 12px 0 0">{t('login')}</TextBase>
           </>
         </IconButton>
       )}
