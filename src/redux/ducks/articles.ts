@@ -27,8 +27,15 @@ const articlesSlice = createSlice({
       const {
         message,
       } = payload;
-      state.allIDs.push(message.id);
-      state.data[message.id] = message;
+
+      const ids = message.map(({ id }) => id);
+      const uniqueIds = ids.filter((id) => !state.allIDs.includes(id));
+      state.allIDs.push(...uniqueIds);
+
+      message.forEach((article) => {
+        state.data[article.id] = article;
+      });
+
       state.state = ArticlesStates.fetched;
     });
     builder.addCase(fetchArticles.rejected, (state, { payload }) => {

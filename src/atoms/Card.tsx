@@ -12,9 +12,15 @@ enum Reactions {
   neutral = 'neutral',
 }
 
-const Wrapper = styled.article<{ reaction: Reactions }>`
+interface WrapperInterface {
+  reaction: Reactions;
+  gridArea: string;
+}
+
+const Wrapper = styled.article<WrapperInterface>`
     padding: 12px;
     height: 140px;
+    grid-area: ${(props) => props.gridArea};
     box-shadow: ${(props) => props.theme.shadow.light};
     border-bottom: 8px solid ${(props) => props.theme.palette[props.reaction]};
 `;
@@ -25,24 +31,24 @@ const getReactionFromRating = (rating: number): Reactions => ((rating >= C.MAX_B
     ? Reactions.negative : Reactions.neutral);
 
 export interface CardProps {
-  label: string,
+  label: string | string[],
   username: string,
   article: string;
   reaction?: number;
-  className?: string,
+  gridArea?: string,
 }
 
 const Card: React.FC<CardProps> = ({
-  label, username, article, className, reaction = C.MAX_BOOK_RATING / 2,
+  label, username, article, gridArea = '', reaction = C.MAX_BOOK_RATING / 2,
 }
 : CardProps) => (
-  <Wrapper className={className} reaction={getReactionFromRating(reaction)}>
+  <Wrapper gridArea={gridArea} reaction={getReactionFromRating(reaction)}>
     <TextBase fontWeight={500}>
       {username}
       {' about'}
     </TextBase>
     <TextBase p="0 4px" fontStyle="italic">
-      {label}
+      {(Array.isArray(label)) ? label.toString() : label}
     </TextBase>
     <div>
       <TextBase p="4px 0">

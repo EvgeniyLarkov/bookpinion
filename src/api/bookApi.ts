@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ServerSuccessResponse } from './types';
-import { AllIDs, ExtendedBookInterface } from '../redux/ducks/types';
+import { AllIDs, ExtendedBookInterface, BookPreviewType } from '../redux/ducks/types';
 import routes from '../routes';
 
 const fetchBookById = async (
@@ -12,5 +12,11 @@ const fetchBookById = async (
   return data;
 };
 
-// eslint-disable-next-line import/prefer-default-export
-export { fetchBookById };
+const fetchPreviewData = async (): Promise<ServerSuccessResponse<BookPreviewType[]>> => {
+  const data = await axios
+    .get<ServerSuccessResponse<BookPreviewType[]>>(routes.bookPreviewPath())
+    .then((response) => response.data);
+  return data;
+};
+
+export { fetchBookById, fetchPreviewData };

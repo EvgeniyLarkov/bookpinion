@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
-import axios from 'axios';
 import SendIcon from '@material-ui/icons/Send';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
@@ -19,7 +18,7 @@ import { publishArticle, setArticleError } from '../redux/ducks/articles';
 import { Tooltip } from '../organisms';
 import { RootState } from '../redux/ducks';
 import C from '../validations/constants';
-import routes from '../routes';
+import { getPreviewData } from '../redux/ducks/books';
 
 const Outer = styled.div`
     width: 828px;
@@ -57,12 +56,6 @@ const Wrapper = styled.div`
     }
 `;
 
-type BookPreviewType = {
-  _id: string;
-  authors: string[];
-  title: string;
-};
-
 const PostitveIcon = styled(InsertEmoticonIcon)`&& { font-size: 50px }`;
 const NeutralIcon = styled(SentimentSatisfiedIcon)`&& { font-size: 50px }`;
 const NegativeIcon = styled(SentimentVeryDissatisfiedIcon)`&& { font-size: 50px }`;
@@ -77,6 +70,7 @@ const InputBlock: React.FC = () => {
   const [previewData, setPreviewData] = useState<OptionsType[]>([{ label: 'default', title: 'pending', value: 'null' }]);
 
   const { error } = useSelector(({ articles }: RootState) => articles);
+  const { preview } = useSelector(({ books }: RootState) => books);
 
   const normalizedErrors = error.reduce((acc: { [index: string]: string[] }, { msg, param }) => {
     if (acc[param] === undefined) {
@@ -99,22 +93,21 @@ const InputBlock: React.FC = () => {
   };
 
   useEffect(() => {
-    const fetchPreviewData = async () => {
-      const response = await axios.get(routes.bookPreviewPath());
-      const { message }: { message: BookPreviewType[] } = response.data;
-      const sortByAuthors = message.reduce<OptionsType[]>((acc, { _id, title, authors }) => {
-        const sorted = authors.map((author: string) => ({
-          label: author,
-          value: _id,
-          title,
-        }));
-        return [...acc, ...sorted];
-      }, []);
-
-      setPreviewData(sortByAuthors);
-    };
-    fetchPreviewData();
+    dispatch(getPreviewData(''));
   }, []);
+
+  useEffect(() => {
+    const sortByAuthors = preview.reduce<OptionsType[]>((acc, { _id, title, authors }) => {
+      const sorted = authors.map((author: string) => ({
+        label: author,
+        value: _id,
+        title,
+      }));
+      return [...acc, ...sorted];
+    }, []);
+
+    setPreviewData(sortByAuthors);
+  }, [preview]);
 
   const handleSendArticle = () => {
     const articleTextErrors = validate(ArticleFields.article, article);
@@ -122,7 +115,7 @@ const InputBlock: React.FC = () => {
     if (!isEmpty(allErrors)) {
       dispatch(setArticleError(allErrors));
     } else {
-      dispatch(publishArticle({ article, bookId, rating: 10 }));
+      dispatch(publishArticle({ article, bookId, rating }));
     }
   };
 

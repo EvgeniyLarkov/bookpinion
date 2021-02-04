@@ -84,7 +84,7 @@ const SelectExtended:React.FC<SelectInterface> = ({
     }
     return { ...acc, [label]: [{ title, value }] };
   }, {}) : { default: options };
-  console.log(dataToShow);
+
   return (
     <Wrapper
       onFocus={handleFocus}

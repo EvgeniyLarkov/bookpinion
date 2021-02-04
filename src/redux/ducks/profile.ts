@@ -7,8 +7,6 @@ import {
 import { isValidationError } from '../../api/types';
 
 // TO-DO:
-// 2. Возможно привести к одному виду интерфейс пользователя в редьюсере, компоненте и беке
-// 3. Исправить краш при отсутсвии соединения с беком
 // 4. Добавить ошибки с бека
 
 export const loginByUsername = asyncFetchActionCreator('profile/loginByUsername', login);

@@ -1,13 +1,17 @@
 import axios from 'axios';
-import { ServerSuccessResponse } from './types';
-import { AllIDs, ExtendedArticleInterface, ArticleInterface } from '../redux/ducks/types';
+import { ArticleRequest, ServerSuccessResponse } from './types';
+import { ExtendedArticleInterface, ArticleInterface } from '../redux/ducks/types';
 import routes from '../routes';
 
 const getArticles = async (
-  input?: AllIDs,
-): Promise<ServerSuccessResponse<ExtendedArticleInterface<AllIDs>>> => {
+  input: ArticleRequest,
+): Promise<ServerSuccessResponse<ExtendedArticleInterface<string>[]>> => {
   const data = await axios
-    .get<ServerSuccessResponse<ExtendedArticleInterface<AllIDs>>>(routes.articlePath(input))
+    .get<ServerSuccessResponse<ExtendedArticleInterface<string>[]>>(routes.articlePath(
+    input.id,
+    input.start,
+    input.end,
+  ))
     .then((response) => response.data);
   return data;
 };

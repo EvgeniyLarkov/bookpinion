@@ -78,9 +78,16 @@ export interface ExtendedBookInterface<K> extends BookInterface {
   link: string
 }
 
+export type BookPreviewType = {
+  _id: string;
+  authors: string[];
+  title: string;
+};
+
 export interface BooksInterface {
   state: BooksStates,
   data: { [K in AllIDs]: ExtendedBookInterface<K>},
+  preview: BookPreviewType[],
   allIDs: AllIDs[],
   error: ValidationError[] | ServerError[],
 }
@@ -95,7 +102,7 @@ export interface ExtendedArticleInterface<K> extends ArticleInterface {
   id: K
   username: string
   title: string
-  author: string
+  authors: string[]
   createdAt: Date
 }
 

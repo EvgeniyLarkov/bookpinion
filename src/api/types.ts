@@ -1,4 +1,4 @@
-import { ServerError, ValidationError } from '../redux/ducks/types';
+import { AllIDs, ServerError, ValidationError } from '../redux/ducks/types';
 
 export enum ErrorStatus {
   connerr = 'connection error',
@@ -50,4 +50,10 @@ export interface BaseUserInfo {
 export interface ExtendedUserInfo extends BaseUserInfo {
   name: string
   surname: string
+}
+
+export interface ArticleRequest {
+  id?: AllIDs,
+  start?: number,
+  end?: number,
 }
