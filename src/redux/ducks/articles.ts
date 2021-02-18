@@ -29,8 +29,7 @@ const articlesSlice = createSlice({
       } = payload;
 
       const ids = message.map(({ id }) => id);
-      const uniqueIds = ids.filter((id) => !state.allIDs.includes(id));
-      state.allIDs.push(...uniqueIds);
+      state.allIDs = ids;
 
       message.forEach((article) => {
         state.data[article.id] = article;

@@ -4,6 +4,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import IconButton from './IconButton';
 
 const Input = styled.input`
+    width: 100%;
     font-family: Roboto, Arial, sans-serif;
     font-style: normal;
     font-weight: 300;
@@ -11,24 +12,20 @@ const Input = styled.input`
     font-size: 18px;
     margin: 0;
     color: ${(props) => props.theme.typography.main};
-    width: 150px;
     border: none;
     background-color: inherit;
+    overflow: hidden;
 `;
 
-const Wrapper = styled.div`
-    display: block;
+const Wrapper = styled.div.attrs((props) => ({ ...props }))`
+    display: flex;
     line-height: 27px;
     border-bottom: 1px solid ${(props) => props.theme.typography.main};
 `;
 
-const StyledSearchIcon = styled(SearchIcon)`
-    vertical-align: middle;
-`;
-
-const Search: React.FC = () => (
-  <Wrapper>
-    <IconButton><StyledSearchIcon /></IconButton>
+const Search: React.FC<React.HTMLAttributes<HTMLDivElement>> = (attrs) => (
+  <Wrapper {...attrs}>
+    <IconButton><SearchIcon /></IconButton>
     <Input />
   </Wrapper>
 );

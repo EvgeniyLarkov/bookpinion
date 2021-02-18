@@ -8,13 +8,16 @@ const Wrapper = styled.div`
   position: absolute;
   background-color: ${(props) => props.theme.palette.secondary};
   box-shadow: ${(props) => props.theme.shadow.light};
-  min-width: 400px;
+  width: max-content;
+  max-width: 100vw;
+  box-sizing: border-box;
   border-radius: 8px;
   padding: 8px 16px;
   top: calc(100% + 16px);
   left: 50%;
   transform: translateX(-50%);
   display: ${(props: WrapperProps) => ((props.visible) ? 'block' : 'none')};
+  overflow: hidden;
   z-index: 100;
 
   .inner {
@@ -44,7 +47,7 @@ const Chip: React.FC<TooltipProps> = ({ children, visible = true }: TooltipProps
     <div className="inner">
       {Array.isArray(children)
         ? children.map((value) => (
-          <TextBase fontSize="16px" color={mainTheme.palette.mainDark} key={_.uniqueId()}>
+          <TextBase fontSize="16px" p="6px 0" color={mainTheme.palette.mainDark} key={_.uniqueId()}>
             {value}
           </TextBase>
         ))

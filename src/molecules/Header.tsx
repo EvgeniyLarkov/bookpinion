@@ -1,17 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { Search, TitleBase } from '../atoms';
-import BaseModal from './Modal';
+import { TitleBase } from '../atoms';
 import { IconBlock } from '../organisms';
 
 const StyledHeader = styled.header`
     display: flex;
     justify-content: space-between;
-    
-    padding-left: 128px;
     height: 130px;
-    width: 1400px;
 `;
 
 const Wrapper = styled.div`
@@ -46,9 +42,7 @@ const Header: React.FC = () => {
         <SubTitle as="h3">{t('subTitle')}</SubTitle>
       </Wrapper>
       <Wrapper>
-        <Search />
         <IconBlock />
-        <BaseModal />
       </Wrapper>
     </StyledHeader>
   );

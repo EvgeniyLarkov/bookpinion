@@ -19,10 +19,16 @@ import FieldWithLabel from './FieldWithLabel';
 // 2. При закрытии окна/изменении поля стереть все ошибки
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  @media screen and (min-width: 60em) {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 16px;
     row-gap: 32px;
+  }
 `;
 
 const RegistrationForm: React.FC = () => {

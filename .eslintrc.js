@@ -8,7 +8,8 @@ module.exports = {
     jest: true,
   },
   rules: {
-    'no-param-reassign': ["error", { "props": false }] 
+    'no-param-reassign': ["error", { "props": false }],
+    "react/jsx-props-no-spreading": 0,
   },
   extends: [
     "eslint:recommended",

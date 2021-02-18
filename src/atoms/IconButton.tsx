@@ -11,17 +11,17 @@ export interface IconButtonProps {
   onClick?: () => void;
 }
 
-const StyledButton = styled(ButtonBase)`
+const StyledButton = styled(ButtonBase)<IconButtonProps>`
     && {
         display: inline-block;
-        margin: ${(props: IconButtonProps) => props.m || 0};
-        padding: ${(props: IconButtonProps) => props.p || 0};
-        border-radius: ${(props: IconButtonProps) => `${props.fontSize || 30}px`};
+        margin: ${(props) => props.m || 0};
+        padding: ${(props) => props.p || 0};
+        border-radius: ${(props) => `${props.fontSize || 30}px`};
         line-height: 0.5;
         svg {
-            font-size:  ${(props: IconButtonProps) => `${props.fontSize || 30}px`};
+            font-size:  ${(props) => `${props.fontSize || 30}px`};
             color: ${(props) => props.color || props.theme.palette.secondary};
-            padding: ${(props: IconButtonProps) => (props.fontSize ? `${props.fontSize / 4}px` : '8px')};
+            padding: ${(props) => (props.fontSize ? `${props.fontSize / 4}px` : '8px')};
         }
         &:hover {
             background-color: ${(props) => props.theme.palette.mainDark};
@@ -30,10 +30,10 @@ const StyledButton = styled(ButtonBase)`
     }
 `;
 
-const IconButton:React.FC<IconButtonProps> = ({
-  children, fontSize, color, onClick, m, p,
+const IconButton:React.FC<IconButtonProps & React.HTMLAttributes<HTMLButtonElement>> = ({
+  children, fontSize, color, onClick, m, p, ...attrs
 }: IconButtonProps) => (
-  <StyledButton fontSize={fontSize} color={color} onClick={onClick} m={m} p={p}>
+  <StyledButton {...attrs} fontSize={fontSize} color={color} onClick={onClick} m={m} p={p}>
     {children}
   </StyledButton>
 );

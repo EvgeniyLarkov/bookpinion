@@ -3,9 +3,11 @@ import styled from 'styled-components';
 import { Chip, TitleBase } from '../atoms';
 
 const Wrapper = styled.div`
-    padding-top: 128px;
-    padding-left: 128px;
-    width: 1400px;
+    padding-top: 36px;
+
+    @media screen and (min-width: 60em) {
+      padding-top: 128px;
+    }
 `;
 
 const Filter: React.FC = () => (

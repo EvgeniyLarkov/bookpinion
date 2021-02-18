@@ -12,22 +12,34 @@ import { LoginForm, RegistrationForm } from '../organisms';
 
 const Wrapper = styled.div`
   position: absolute;
+  width: 100%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  min-width: 400px;
+  
+
   .inner-box {
     background-color: ${(props) => props.theme.palette.main};
-    border-radius: 4px;
     padding: 8px 32px;
   }
+
   .inner-box__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
+
   .inner-box__body {
     padding: 12px 0;
+  }
+
+  @media screen and (min-width: 60em) {
+    width: min-content;
+    min-width: 400px;
+
+    .inner-box {
+      border-radius: 4px;
+    }
   }
 `;
 

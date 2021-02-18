@@ -1,6 +1,8 @@
 {
     "subTitle": "Share your opinion about favorite books",
     "login": "Log in",
+    "language": "Choose language",
+    "bookshelf": "Bookshelf",
     "register": "Register",
     "hello": "Hello, {{name}}",
     "inputBlock": {

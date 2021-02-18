@@ -21,15 +21,41 @@ import C from '../validations/constants';
 import { getPreviewData } from '../redux/ducks/books';
 
 const Outer = styled.div`
-    width: 828px;
-    margin-top: 64px;
-    padding: 12px 0;
+    display: inline-block;
+    position: relative;
+    margin-top: 32px;
+    padding: 12px 12px 12px 0;
     background-color: ${(props) => props.theme.palette.secondary};
     box-shadow: ${(props) => props.theme.shadow.standart};
+
+    @media screen and (min-width: 60em) {
+      margin-top: 64px;
+      left: -32px;
+    }
+
+    @media screen and (min-width: 75em) {
+      left: -64px;
+    }
+
+    @media screen and (min-width: 100em) {
+      left: -128px;
+    }
 `;
 
 const Inner = styled.div`
-    padding-left: 128px;
+    padding-left: 12px;
+
+    @media screen and (min-width: 60em) {
+      padding-left: 32px;
+    }
+
+    @media screen and (min-width: 75em) {
+      padding-left: 64px;
+    }
+
+    @media screen and (min-width: 100em) {
+      padding-left: 128px;
+    }
 `;
 
 const Title = styled(TitleBase)`

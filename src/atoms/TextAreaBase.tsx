@@ -5,6 +5,8 @@ const TextAreaBase = styled.textarea.attrs((props) => ({
   cols: props.cols || 40,
   autoComplete: props.autoComplete,
 }))`
+    width: 100%;
+    box-sizing: border-box;
     font-family: Roboto, Arial, sans-serif;
     font-style: normal;
     font-weight: 300;
