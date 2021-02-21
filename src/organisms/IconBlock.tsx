@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { uniqueId } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import ExitToApp from '@material-ui/icons/ExitToApp';
@@ -12,7 +13,10 @@ import { AppDispatch } from '../redux/store';
 import { openModal } from '../redux/ducks/modal';
 import { ModalVariants, ProfileStates } from '../redux/ducks/types';
 import { RootState } from '../redux/ducks';
-import { Search } from '../atoms';
+import {
+  Option, Search, SelectBase,
+} from '../atoms';
+import { changeLanguage } from '../redux/ducks/profile';
 
 const Container = styled.div<{ open: boolean }>`
   .menu-wrapper {
@@ -42,6 +46,10 @@ const Container = styled.div<{ open: boolean }>`
     display: flex;
     align-items: center;
     overflow: hidden;
+  }
+
+  .dropout-container {
+    position: relative;
   }
 
 
@@ -81,11 +89,12 @@ const Container = styled.div<{ open: boolean }>`
 `;
 
 const IconBlock: React.FC = () => {
-  const { t } = useTranslation();
-
-  const [open, setOpen] = useState(false);
-
+  const { t, i18n } = useTranslation();
   const dispatch: AppDispatch = useDispatch();
+
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [languageTabOpen, setLanguageTabOpen] = useState(false);
+
   const { state, name } = useSelector(({ profile }: RootState) => profile);
 
   const handleLoginClick = () => {
@@ -93,11 +102,19 @@ const IconBlock: React.FC = () => {
   };
 
   const handleMenuClick = () => {
-    setOpen(!open);
+    setMenuOpen(!menuOpen);
+  };
+
+  const handlelanguageTabClick = () => {
+    setLanguageTabOpen(!languageTabOpen);
+  };
+
+  const handleLanguageSelect = (lang: string) => () => {
+    dispatch(changeLanguage(lang));
   };
 
   return (
-    <Container open={open}>
+    <Container open={menuOpen}>
       <IconButton className="menu-button" onClick={handleMenuClick}><MenuIcon /></IconButton>
       <div className="menu-wrapper">
         {state === ProfileStates.logged ? (
@@ -113,12 +130,22 @@ const IconBlock: React.FC = () => {
           </IconButton>
         )}
         <Search className="menu-option__search" />
-        <IconButton>
-          <div className="menu-option">
-            <Language />
-            <TextBase className="menu-option__secondary-text" p="0 12px 0 0">{t('language')}</TextBase>
-          </div>
-        </IconButton>
+        <div className="dropout-container">
+          <SelectBase title={(
+            <IconButton onClick={handlelanguageTabClick}>
+              <div className="menu-option">
+                <Language />
+                <TextBase className="menu-option__secondary-text" p="0 12px 0 0">{t('language')}</TextBase>
+              </div>
+            </IconButton>
+            )}
+          >
+            <>
+              {i18n.languages.map((item) => <Option handler={handleLanguageSelect(item)} key={uniqueId('lang')}>{item}</Option>)}
+            </>
+          </SelectBase>
+        </div>
+
         <IconButton>
           <div className="menu-option">
             <Bookmarks />

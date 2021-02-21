@@ -1,4 +1,5 @@
 import axios from 'axios';
+import i18n from 'i18next';
 import { ProfileInfo } from '../redux/ducks/types';
 import routes from '../routes';
 import { BaseUserInfo, ServerSuccessResponse, ExtendedUserInfo } from './types';
@@ -17,4 +18,12 @@ const register = async (
   return data;
 };
 
-export { login, register };
+// TO-DO
+// Прикрутить ошибки смены языка
+
+const changeUserLanguage = async (language: string) : Promise<string> => {
+  await i18n.changeLanguage(language);
+  return i18n.language;
+};
+
+export { login, register, changeUserLanguage };

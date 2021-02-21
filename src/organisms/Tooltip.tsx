@@ -18,10 +18,12 @@ const Wrapper = styled.div`
   transform: translateX(-50%);
   display: ${(props: WrapperProps) => ((props.visible) ? 'block' : 'none')};
   overflow: hidden;
-  z-index: 100;
+  z-index: 5;
 
   .inner {
+    display: flex;
     position: relative;
+    flex-direction: column;
   }
 
   .inner::before {

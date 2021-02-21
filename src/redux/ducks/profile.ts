@@ -1,8 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { login, register } from '../../api/userApi';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { login, register, changeUserLanguage } from '../../api/userApi';
 import { asyncFetchActionCreator } from '../../api/asyncActions';
 import {
-  Languages, ProfileInterface, ProfileStates, ProfileStatusStates, ValidationError,
+  ProfileInterface, ProfileStates, ProfileStatusStates, ValidationError,
 } from './types';
 import { isValidationError } from '../../api/types';
 
@@ -11,9 +11,10 @@ import { isValidationError } from '../../api/types';
 
 export const loginByUsername = asyncFetchActionCreator('profile/loginByUsername', login);
 export const registerUser = asyncFetchActionCreator('profile/registerUser', register);
+export const changeLanguage = createAsyncThunk('profile/changeLanguage', changeUserLanguage);
 
 const initialState: ProfileInterface = {
-  language: Languages.en,
+  language: 'en',
   username: null,
   name: 'guest',
   surname: null,
@@ -70,6 +71,9 @@ const profileSlice = createSlice({
     builder.addCase(registerUser.pending, (state) => {
       state.state = ProfileStates.pending;
       state.error = [];
+    });
+    builder.addCase(changeLanguage.fulfilled, (state, { payload }) => {
+      state.language = payload;
     });
   },
 });

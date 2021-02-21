@@ -1,0 +1,36 @@
+{
+    "subTitle": "Поделитесь мнением о своих любимых книгах!",
+    "login": "Войти",
+    "language": "Сменить язык",
+    "bookshelf": "Книжная полка",
+    "register": "Регистрация",
+    "hello": "Здравствуйте, {{name}}",
+    "inputBlock": {
+        "title": "Поделись мнением!",
+        "description": "О книге",
+        "bookAdvice": "выберите книгу"
+    },
+    "loginForm": {
+        "usernamePh": "имя пользователя",
+        "passwordPh": "пароль",
+        "loginButton": "Войти"
+    },
+    "registrationForm": {
+        "firstname": "Имя",
+        "firstnamePh": "Илон",
+        "lastname": "Фамилия",
+        "lastnamePh": "Маск",
+        "password": "Пароль",
+        "passwordPh": "пароль",
+        "passwordRepeat": "Повторите пароль",
+        "username": "Выберите имя пользователя",
+        "usernamePh": "billgates2000",
+        "usernameTip": "Имя пользователя может содержать только латинские буквы и цифры. Минимальная длинна - {{min}} символов, максимальная - {{max}} символов"
+    },
+    "validationErrors": {
+        "isEmpty": "поле {{field}} не должно быть пустым",
+        "isAlphanumeric": "поле {{field}} должно содержать только допустимые символы",
+        "isLength": "для поля {{field}} минимальное количество символов -  {{min}}, максимальное - {{max}}",
+        "notMatch": "{{field1}} не совпадает с {{field2}}"
+    }
+}

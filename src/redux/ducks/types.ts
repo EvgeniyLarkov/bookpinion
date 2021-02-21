@@ -4,11 +4,6 @@ export enum ProfileStatusStates {
   'guest',
 }
 
-export enum Languages {
-  'en',
-  'ru',
-}
-
 export enum ProfileStates {
   'idle',
   'pending',
@@ -59,7 +54,7 @@ export interface ProfileInfo {
 }
 
 export interface ProfileInterface extends ProfileInfo {
-  language: Languages
+  language: string
   state: ProfileStates
   error: ValidationError[]
 }
