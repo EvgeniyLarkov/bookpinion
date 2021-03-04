@@ -18,7 +18,6 @@ import { publishArticle, setArticleError } from '../redux/ducks/articles';
 import { Tooltip } from '../organisms';
 import { RootState } from '../redux/ducks';
 import C from '../validations/constants';
-import { getPreviewData } from '../redux/ducks/books';
 
 const Outer = styled.div`
     display: inline-block;
@@ -93,10 +92,10 @@ const InputBlock: React.FC = () => {
   const [article, setArticle] = useState('');
   const [rating, setRating] = useState(C.MAX_BOOK_RATING / 2);
   const [bookId, setBookId] = useState('');
-  const [previewData, setPreviewData] = useState<OptionsType[]>([{ label: 'default', title: 'pending', value: 'null' }]);
+  const [previewData, setPreviewData] = useState<OptionsType[]>([{ label: '', title: 'pending', value: 'null' }]);
 
   const { error } = useSelector(({ articles }: RootState) => articles);
-  const { preview } = useSelector(({ books }: RootState) => books);
+  const { booksPreview: preview } = useSelector(({ meta }: RootState) => meta);
 
   const normalizedErrors = error.reduce((acc: { [index: string]: string[] }, { msg, param }) => {
     if (acc[param] === undefined) {
@@ -119,18 +118,16 @@ const InputBlock: React.FC = () => {
   };
 
   useEffect(() => {
-    dispatch(getPreviewData(''));
-  }, []);
-
-  useEffect(() => {
-    const sortByAuthors = preview.reduce<OptionsType[]>((acc, { _id, title, authors }) => {
-      const sorted = authors.map((author: string) => ({
-        label: author,
-        value: _id,
-        title,
-      }));
-      return [...acc, ...sorted];
-    }, []);
+    const sortByAuthors = (preview === null)
+      ? [{ value: '', title: 'No data' }]
+      : preview.reduce<OptionsType[]>((acc, { _id, title, authors }) => {
+        const sorted = authors.map((author: string) => ({
+          label: author,
+          value: _id,
+          title,
+        }));
+        return [...acc, ...sorted];
+      }, []);
 
     setPreviewData(sortByAuthors);
   }, [preview]);

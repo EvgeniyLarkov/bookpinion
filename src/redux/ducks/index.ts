@@ -4,6 +4,7 @@ import modalSlice from './modal';
 import booksSlice from './books';
 import errorsSlice from './errors';
 import articlesSlice from './articles';
+import metaSlice from './meta';
 
 const rootReducer = combineReducers({
   profile: profileSlice,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   books: booksSlice,
   errors: errorsSlice,
   articles: articlesSlice,
+  meta: metaSlice,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

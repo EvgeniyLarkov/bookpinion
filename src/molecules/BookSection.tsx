@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { Link } from 'react-router-dom';
 import { isNull, uniqueId } from 'lodash';
 import { Card } from '../atoms';
 import ChangePageBlock from '../organisms/ChangePageBlock';
@@ -12,7 +13,7 @@ const Grid = styled.section`
     @media screen and (min-width: 60em) {
       display: grid;
       grid-gap: 12px;
-      grid-template-columns: repeat(3, auto);
+      grid-template-columns: repeat(3, 1fr);
       grid-template-areas: 
       "a1 b2 a3"
       "b1 b2 b3"
@@ -22,6 +23,10 @@ const Grid = styled.section`
       "b4 a5 b6"
       ;
     }
+`;
+
+const LinkInGrid = styled(Link)<{ gridArea: string }>`
+  grid-area: ${(props) => props.gridArea};
 `;
 
 const LoadingEffect = keyframes`
@@ -43,13 +48,8 @@ const CardLoading = styled.div<{ gridArea?: string, h?: number }>`
   overflow: hidden;
 `;
 
-interface BookImgInterface {
-  readonly gridArea: string;
-}
-
-const BookImg = styled.img.attrs((props) => ({ src: props.src }))<BookImgInterface>`
+const BookImg = styled.img.attrs((props) => ({ src: props.src }))`
     box-shadow: ${(props) => props.theme.shadow.light};
-    grid-area: ${(props) => props.gridArea};
     object-fit: cover;
     width: 100%;
     height: 100%;
@@ -110,13 +110,12 @@ const BookSection: React.FC<BookSectionInterface> = (
               />
               {(books[index])
                 && (
-                  <BookImg
-                    gridArea={`b${index + 1}`}
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore: Object is possibly 'null'.
-                    src={books[index].imageLinks.normal || books[index].imageLinks.small || ''}
-                    key={uniqueId('book')}
-                  />
+                  <LinkInGrid to={`books/${books[index]?.id}`} gridArea={`b${index + 1}`}>
+                    <BookImg
+                      src={books[index]?.imageLinks.normal || books[index]?.imageLinks.small || ''}
+                      key={uniqueId('book')}
+                    />
+                  </LinkInGrid>
                 )}
             </>
           )

@@ -1,4 +1,12 @@
-import { AllIDs, ServerError, ValidationError } from '../redux/ducks/types';
+import {
+  AllIDs,
+  BookPreviewType,
+  CategoryType,
+  ExtendedArticleInterface,
+  ExtendedBookInterface,
+  ServerError,
+  ValidationError,
+} from '../redux/ducks/types';
 
 export enum ErrorStatus {
   connerr = 'connection error',
@@ -56,4 +64,19 @@ export interface ArticleRequest {
   id?: AllIDs,
   start?: number,
   end?: number,
+}
+
+export interface ArticleGetResponse {
+  data: ExtendedArticleInterface<AllIDs>[]
+  totalArticles: number
+}
+
+export interface BookGetResponse {
+  data: ExtendedBookInterface<AllIDs>[]
+  totalBooks: number
+}
+
+export interface MetaGetResponse {
+  categories: CategoryType[],
+  bookPreview: BookPreviewType[]
 }

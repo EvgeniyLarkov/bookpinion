@@ -1,19 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { asyncFetchActionCreator } from '../../api/asyncActions';
-import { fetchBookById, fetchPreviewData } from '../../api/bookApi';
+import { fetchBookById } from '../../api/bookApi';
 import { isValidationError } from '../../api/types';
 import { BooksInterface, BooksStates } from './types';
 
 const initialState: BooksInterface = {
   state: BooksStates.idle,
   data: {},
-  preview: [],
   allIDs: [],
   error: [],
 };
 
 export const getBookById = asyncFetchActionCreator('books/fetchBooks', fetchBookById);
-export const getPreviewData = asyncFetchActionCreator('books/getPreviewData', fetchPreviewData);
 
 const booksSlice = createSlice({
   name: 'books',
@@ -22,10 +20,17 @@ const booksSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getBookById.fulfilled, (state, { payload }) => {
       const {
-        message,
+        message: {
+          data,
+        },
       } = payload;
-      state.allIDs.push(message.id);
-      state.data[message.id] = message;
+
+      state.allIDs.push(...data.map(({ id }) => id));
+
+      data.forEach((book) => {
+        state.data[book.id] = book;
+      });
+
       state.state = BooksStates.fetched;
     });
     builder.addCase(getBookById.rejected, (state, { payload }) => {
@@ -37,7 +42,7 @@ const booksSlice = createSlice({
     builder.addCase(getBookById.pending, (state) => {
       state.state = BooksStates.pending;
     });
-    builder.addCase(getPreviewData.fulfilled, (state, { payload }) => {
+    /* builder.addCase(getPreviewData.fulfilled, (state, { payload }) => {
       const {
         message,
       } = payload;
@@ -49,7 +54,7 @@ const booksSlice = createSlice({
         state.error = payload.errors;
       }
       state.state = BooksStates.idle;
-    });
+    }); */
   },
 });
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { TitleBase } from '../atoms';
 import { IconBlock } from '../organisms';
@@ -32,13 +33,19 @@ const SubTitle = styled(TitleBase)`
     padding: 0;
 `;
 
+const StyledLink = styled(Link)`
+    text-decoration: none;
+`;
+
 const Header: React.FC = () => {
   const { t } = useTranslation();
 
   return (
     <StyledHeader>
       <Wrapper>
-        <Title as="h1">Bookpinion.</Title>
+        <StyledLink to="/">
+          <Title as="h1">Bookpinion.</Title>
+        </StyledLink>
         <SubTitle as="h3">{t('subTitle')}</SubTitle>
       </Wrapper>
       <Wrapper>

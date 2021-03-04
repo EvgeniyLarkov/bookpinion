@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
 import { isNull } from 'lodash';
 import Header from '../molecules/Header';
 import InputBlock from '../molecules/InputBlock';
@@ -14,27 +13,8 @@ import { getBookById } from '../redux/ducks/books';
 import C from '../validations/constants';
 import { ArticlesStates } from '../redux/ducks/types';
 import BaseModal from '../molecules/Modal';
-
-const Body = styled.div`
-  height: 100vh;
-  box-sizing: border-box;
-  background: ${(props) => props.theme.background};
-`;
-
-const Wrapper = styled.div`
-  @media screen and (min-width: 60em) { // 960px
-    padding: 0 32px;
-  }
-
-  @media screen and (min-width: 75em) { // 1200px
-    padding: 0 64px;
-  }
-
-  @media screen and (min-width: 100em) { // 1600px
-    padding-left: 128px;
-    width: 1400px;
-  }
-`;
+import Template from './Template';
+import { getMetaData } from '../redux/ducks/meta';
 
 const Home: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -49,10 +29,13 @@ const Home: React.FC = () => {
     ? articlesIDs.map((id) => articlesData[id])
     : Array(C.ARTICLES_PER_PAGE).fill(null);
   const allBooks = bookIDs.map((id) => booksData[id]);
-  console.log(articles);
   const books = articles.map((article) => (!isNull(article)
     ? allBooks.find(({ id }) => id === article.bookId) || null
     : null));
+
+  useEffect(() => {
+    dispatch(getMetaData(''));
+  }, []);
 
   useEffect(() => {
     const start = C.ARTICLES_PER_PAGE * (pageNumber - 1);
@@ -66,21 +49,19 @@ const Home: React.FC = () => {
   }, [articlesIDs]);
 
   return (
-    <Body>
-      <Wrapper>
-        <Header />
-        <InputBlock />
-        <Filter />
-        <BookSection
-          books={books}
-          articles={articles}
-          pageNumber={pageNumber}
-          setPage={setPage}
-        />
-        <Notification />
-        <BaseModal />
-      </Wrapper>
-    </Body>
+    <Template>
+      <Header />
+      <InputBlock />
+      <Filter />
+      <BookSection
+        books={books}
+        articles={articles}
+        pageNumber={pageNumber}
+        setPage={setPage}
+      />
+      <Notification />
+      <BaseModal />
+    </Template>
   );
 };
 

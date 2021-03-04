@@ -28,10 +28,10 @@ const articlesSlice = createSlice({
         message,
       } = payload;
 
-      const ids = message.map(({ id }) => id);
+      const ids = message.data.map(({ id }) => id);
       state.allIDs = ids;
 
-      message.forEach((article) => {
+      message.data.forEach((article) => {
         state.data[article.id] = article;
       });
 
