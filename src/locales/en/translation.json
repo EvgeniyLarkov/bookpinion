@@ -32,5 +32,6 @@
         "isAlphanumeric": "{{field}} should only contain alphanumeric characters",
         "isLength": "{{field}} length should be between {{min}} and {{max}} characters",
         "notMatch": "{{field1}} does not match {{field2}}"
-    }
+    },
+    "bookSectionLabel":" Top books & opinions:"
 }

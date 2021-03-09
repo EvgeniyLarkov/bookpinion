@@ -62,8 +62,13 @@ export interface ExtendedUserInfo extends BaseUserInfo {
 
 export interface ArticleRequest {
   id?: AllIDs,
-  start?: number,
-  end?: number,
+  start?: string,
+  end?: string,
+  category?: string,
+}
+
+export interface BookRequest {
+  id?: string | string[][],
 }
 
 export interface ArticleGetResponse {

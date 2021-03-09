@@ -1,13 +1,12 @@
 import axios from 'axios';
-import { BookGetResponse, ServerSuccessResponse } from './types';
-import { AllIDs } from '../redux/ducks/types';
-import routes from '../routes';
+import { BookGetResponse, BookRequest, ServerSuccessResponse } from './types';
+import paths from '../paths';
 
 const fetchBookById = async (
-  input: AllIDs,
+  input: BookRequest,
 ): Promise<ServerSuccessResponse<BookGetResponse>> => {
   const data = await axios
-    .get<ServerSuccessResponse<BookGetResponse>>(routes.bookPath(input))
+    .get<ServerSuccessResponse<BookGetResponse>>(paths.bookPath(input))
     .then((response) => response.data);
   return data;
 };

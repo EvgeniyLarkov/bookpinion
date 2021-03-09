@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { Link } from 'react-router-dom';
+import {
+  Link,
+} from 'react-router-dom';
 import { isNull, uniqueId } from 'lodash';
 import { Card } from '../atoms';
-import ChangePageBlock from '../organisms/ChangePageBlock';
 import { ExtendedBookInterface, ExtendedArticleInterface } from '../redux/ducks/types';
+
+// TO-DO
+// Set Page перенести в дочерний блок
 
 const Grid = styled.section`
     padding-top: 32px;
@@ -58,16 +62,12 @@ const BookImg = styled.img.attrs((props) => ({ src: props.src }))`
 export interface BookSectionInterface {
   books: (ExtendedBookInterface<string> | null)[]
   articles: (ExtendedArticleInterface<string> | null)[]
-  pageNumber: number
-  setPage: (arg: number) => void
 }
 
 const BookSection: React.FC<BookSectionInterface> = (
   {
     books,
     articles,
-    pageNumber,
-    setPage,
   }: BookSectionInterface,
 ) => {
   const [loadingState, setLoadingState] = useState(false);
@@ -79,14 +79,6 @@ const BookSection: React.FC<BookSectionInterface> = (
       setLoadingState(false);
     }
   }, [books, articles]);
-
-  const setNextPage = () => { setPage(pageNumber + 1); };
-  const setPreviousPage = () => {
-    if (pageNumber === 0) setPage(pageNumber - 1);
-    else setPage(pageNumber);
-  };
-  const setFirstPage = () => { setPage(1); };
-  const setLastPage = () => { setPage(1); };
 
   return (
     <>
@@ -121,14 +113,6 @@ const BookSection: React.FC<BookSectionInterface> = (
           )
         ))}
       </Grid>
-      <ChangePageBlock
-        pageNumber={pageNumber}
-        setPageNumber={setPage}
-        setNextPage={setNextPage}
-        setPreviousPage={setPreviousPage}
-        setFirstPage={setFirstPage}
-        setLastPage={setLastPage}
-      />
     </>
   );
 };

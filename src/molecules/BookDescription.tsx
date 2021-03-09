@@ -46,7 +46,7 @@ const BookDescription: React.FC = () => {
   const { data } = useSelector(({ books }: RootState) => books);
 
   useEffect(() => {
-    dispatch(getBookById(id));
+    dispatch(getBookById({ id }));
   }, [id]);
 
   const book = data[id];

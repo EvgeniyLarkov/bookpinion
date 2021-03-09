@@ -10,11 +10,13 @@ const Label = styled(TextBase)`
     background-color: inherit;
 `;
 
-const Button = styled(ButtonBase)`
+const Button = styled(ButtonBase)<{ selected?: boolean }>`
     && {
         margin-left: 12px;
         display: inline-block;
-        background-color: ${(props) => props.theme.palette.main};
+        background-color: ${(props) => (props.selected
+    ? props.theme.palette.mainDark
+    : props.theme.palette.main)};
         border-radius: 16px;
         box-shadow: ${(props) => props.theme.shadow.light};
         &:hover {
@@ -26,9 +28,15 @@ const Button = styled(ButtonBase)`
 
 export interface ChipProps {
   children: string;
+  selected: boolean;
+  onClick?: () => void;
 }
 
 // eslint-disable-next-line max-len
-const Chip: React.FC<ChipProps> = ({ children }: ChipProps) => <Button><Label>{children}</Label></Button>;
+const Chip: React.FC<ChipProps> = ({
+  children,
+  onClick,
+  selected = false,
+}: ChipProps) => <Button onClick={onClick} selected={selected}><Label>{children}</Label></Button>;
 
 export default Chip;

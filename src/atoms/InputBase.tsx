@@ -9,13 +9,15 @@ interface InputProps {
   readonly fontStyle?: 'normal' | 'italic' | 'oblique';
   readonly bgColor?: string;
   readonly borderColor?: string;
+  readonly theme: Theme
+
   readonly value?: string;
   readonly placeholder?: string;
   readonly onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  readonly theme: Theme
 }
 
 const InputBase = styled.input.attrs((props: InputProps) => ({
+  type: 'text',
   placeholder: props.placeholder || '',
   value: props.value || '',
   onChange: props.onChange,

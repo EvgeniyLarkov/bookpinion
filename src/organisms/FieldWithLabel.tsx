@@ -48,7 +48,7 @@ const FieldWithLabel: React.FC<FieldWithLabelProps> = ({
         onMouseLeave={handleMouseLeave}
         borderColor={isValid ? undefined : mainTheme.palette.negative}
       />
-      {tooltipContent !== undefined && <Tooltip visible={visible}>{tooltipContent}</Tooltip>}
+      {tooltipContent && <Tooltip visible={visible}>{tooltipContent}</Tooltip>}
     </StyledField>
   );
 };

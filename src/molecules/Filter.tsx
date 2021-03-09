@@ -1,22 +1,39 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Chip, TitleBase } from '../atoms';
+import { Chip } from '../atoms';
 
-const Wrapper = styled.div`
-    padding-top: 36px;
+export interface FilterInterface {
+  categories: string[] | null;
+  activeCategory: string | null;
+  setActiveCategory: (value: string | null) => void;
+}
 
-    @media screen and (min-width: 60em) {
-      padding-top: 128px;
-    }
-`;
+const Filter: React.FC<FilterInterface> = ({
+  categories,
+  activeCategory,
+  setActiveCategory,
+}: FilterInterface) => {
+  const changeCategory = (value: string | null) => () => setActiveCategory(value);
 
-const Filter: React.FC = () => (
-  <Wrapper>
-    <TitleBase>Top books & opinions:</TitleBase>
-    <div>
-      <Chip>Russian</Chip>
-    </div>
-  </Wrapper>
-);
+  return (
+    <>
+      <Chip
+        onClick={changeCategory(null)}
+        selected={activeCategory === null}
+      >
+        All
+      </Chip>
+      {categories ? categories.map((item) => (
+        <Chip
+          key={`cat_${item}`}
+          onClick={changeCategory(item)}
+          selected={item === activeCategory}
+        >
+          {item}
+        </Chip>
+      ))
+        : ''}
+    </>
+  );
+};
 
 export default Filter;

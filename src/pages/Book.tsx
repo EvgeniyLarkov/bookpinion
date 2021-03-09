@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Route, BrowserRouter as Router, Switch, useRouteMatch,
+  Route, Switch, useRouteMatch,
 } from 'react-router-dom';
 import BookDescription from '../molecules/BookDescription';
 import Header from '../molecules/Header';
@@ -12,16 +12,14 @@ const Book:React.FC = () => {
   return (
     <Template>
       <Header />
-      <Router>
-        <Switch>
-          <Route path={`${path}/:id`}>
-            <BookDescription />
-          </Route>
-          <Route path={`${path}`}>
-            Choose a book
-          </Route>
-        </Switch>
-      </Router>
+      <Switch>
+        <Route path={`${path}/:id`}>
+          <BookDescription />
+        </Route>
+        <Route path={`${path}`}>
+          Choose a book
+        </Route>
+      </Switch>
     </Template>
   );
 };

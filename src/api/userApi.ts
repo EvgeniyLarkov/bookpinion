@@ -1,11 +1,11 @@
 import axios from 'axios';
 import i18n from 'i18next';
 import { ProfileInfo } from '../redux/ducks/types';
-import routes from '../routes';
+import paths from '../paths';
 import { BaseUserInfo, ServerSuccessResponse, ExtendedUserInfo } from './types';
 
 const login = async (userdata: BaseUserInfo): Promise<ServerSuccessResponse<ProfileInfo>> => {
-  const data = await axios.post<ServerSuccessResponse<ProfileInfo>>(routes.authPath(), userdata)
+  const data = await axios.post<ServerSuccessResponse<ProfileInfo>>(paths.authPath(), userdata)
     .then((response) => response.data);
   return data;
 };
@@ -13,7 +13,7 @@ const login = async (userdata: BaseUserInfo): Promise<ServerSuccessResponse<Prof
 const register = async (
   userdata: ExtendedUserInfo,
 ): Promise<ServerSuccessResponse<ProfileInfo>> => {
-  const data = await axios.post<ServerSuccessResponse<ProfileInfo>>(routes.profilePath(), userdata)
+  const data = await axios.post<ServerSuccessResponse<ProfileInfo>>(paths.profilePath(), userdata)
     .then((response) => response.data);
   return data;
 };
