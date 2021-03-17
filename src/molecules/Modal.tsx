@@ -8,7 +8,7 @@ import { RootState } from '../redux/ducks';
 import { closeModal, ModalStates } from '../redux/ducks/modal';
 import { AppDispatch } from '../redux/store';
 import { ModalVariants } from '../redux/ducks/types';
-import { LoginForm, RegistrationForm } from '../organisms';
+import { LoginForm, RegistrationForm, UpdateBookDataForm } from '../organisms';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -60,6 +60,9 @@ const BaseModal: React.FC = () => {
         break;
       case ModalVariants.registration:
         return <RegistrationForm />;
+        break;
+      case ModalVariants.updateBookData:
+        return <UpdateBookDataForm />;
         break;
       default:
         return <></>;

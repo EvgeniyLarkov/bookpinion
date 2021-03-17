@@ -20,6 +20,7 @@ const initialState: ProfileInterface = {
   surname: null,
   state: ProfileStates.idle,
   status: ProfileStatusStates.guest,
+  isAdmin: false,
   token: null,
   error: [],
 };
@@ -35,18 +36,20 @@ const profileSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(loginByUsername.fulfilled, (state, { payload }) => {
       const {
-        name, surname, username, token,
+        name, surname, username, isAdmin,
       } = payload.message;
       state.state = ProfileStates.logged;
       state.username = username;
       state.name = name;
       state.surname = surname;
-      state.token = token;
+      state.token = payload.token || null;
+      state.status = isAdmin ? ProfileStatusStates.admin : ProfileStatusStates.user;
     });
     builder.addCase(loginByUsername.rejected, (state, { payload }) => {
       if (payload && isValidationError(payload)) {
         state.error = payload.errors;
       }
+      state.state = ProfileStates.idle;
     });
     builder.addCase(loginByUsername.pending, (state) => {
       state.state = ProfileStates.pending;
@@ -54,13 +57,13 @@ const profileSlice = createSlice({
     });
     builder.addCase(registerUser.fulfilled, (state, { payload }) => {
       const {
-        name, surname, username, token,
+        name, surname, username,
       } = payload.message;
       state.state = ProfileStates.logged;
       state.username = username;
       state.name = name;
       state.surname = surname;
-      state.token = token;
+      state.token = payload.token || null;
     });
     builder.addCase(registerUser.rejected, (state, { payload }) => {
       if (payload && isValidationError(payload)) {

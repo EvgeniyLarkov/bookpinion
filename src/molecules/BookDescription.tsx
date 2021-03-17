@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { TextBase, TitleBase } from '../atoms';
+import { BookPictureExtended } from '../organisms';
 import { RootState } from '../redux/ducks';
 import { getBookById } from '../redux/ducks/books';
 import { AppDispatch } from '../redux/store';
@@ -33,12 +34,6 @@ const Wrapper = styled.div`
     }
 `;
 
-const BookImg = styled.img.attrs((props) => ({ src: props.src }))`
-    box-shadow: ${(props) => props.theme.shadow.light};
-    object-fit: cover;
-    width: 100%;
-`;
-
 const BookDescription: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const { id } = useParams() as { id: string };
@@ -53,9 +48,11 @@ const BookDescription: React.FC = () => {
 
   return (
     <Wrapper>
-      {(book !== undefined) ? (
+      {(book) ? (
         <>
-          <BookImg src={book.imageLinks.normal || book.imageLinks.small} />
+          <BookPictureExtended
+            book={book}
+          />
           <div className="bookinfo">
             <div className="bookinfo__title">
               <TitleBase p="0" fontWeight={500}>

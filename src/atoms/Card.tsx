@@ -14,13 +14,11 @@ enum Reactions {
 
 interface WrapperInterface {
   reaction: Reactions;
-  gridArea: string;
 }
 
 const Wrapper = styled.article<WrapperInterface>`
     padding: 12px;
     height: 140px;
-    grid-area: ${(props) => props.gridArea};
     box-shadow: ${(props) => props.theme.shadow.light};
     border-bottom: 8px solid ${(props) => props.theme.palette[props.reaction]};
 `;
@@ -35,14 +33,13 @@ export interface CardProps {
   username: string,
   article: string;
   reaction?: number;
-  gridArea?: string,
 }
 
 const Card: React.FC<CardProps> = ({
-  label, username, article, gridArea = '', reaction = C.MAX_BOOK_RATING / 2,
+  label, username, article, reaction = C.MAX_BOOK_RATING / 2,
 }
 : CardProps) => (
-  <Wrapper gridArea={gridArea} reaction={getReactionFromRating(reaction)}>
+  <Wrapper reaction={getReactionFromRating(reaction)}>
     <TextBase fontWeight={500}>
       {username}
       {' about'}

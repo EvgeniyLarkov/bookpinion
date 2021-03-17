@@ -13,7 +13,8 @@
     "loginForm": {
         "usernamePh": "username",
         "passwordPh": "password",
-        "loginButton": "log in"
+        "loginButton": "log in",
+        "loginSuccess": "Welcome back {{name}}"
     },
     "registrationForm": {
         "firstname": "First name",
@@ -25,7 +26,8 @@
         "passwordRepeat": "Repeat password",
         "username": "Select a username",
         "usernamePh": "billgates2000",
-        "usernameTip": "Username should contain only numbers and english letters. Minimum length - {{min}}, maximum length - {{max}}"
+        "usernameTip": "Username should contain only numbers and english letters. Minimum length - {{min}}, maximum length - {{max}}",
+        "registrationSuccess": "Welcome {{name}}!"
     },
     "validationErrors": {
         "isEmpty": "{{field}} should not be empty",

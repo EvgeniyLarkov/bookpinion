@@ -2,10 +2,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { asyncFetchActionCreator } from '../../api/asyncActions';
 import { getArticles, postArticle } from '../../api/articleApi';
 import { isValidationError } from '../../api/types';
-import { ArticlesInterface, ArticlesStates, ValidationError } from './types';
+import {
+  ArticlePublishStates,
+  ArticlesInterface,
+  ArticlesStates,
+  ValidationError,
+} from './types';
 
 const initialState: ArticlesInterface = {
   state: ArticlesStates.idle,
+  publishState: ArticlePublishStates.idle,
   data: {},
   allIDs: [],
   error: [],
@@ -50,6 +56,13 @@ const articlesSlice = createSlice({
       if (payload && isValidationError(payload)) {
         state.error.push(...payload.errors);
       }
+      state.publishState = ArticlePublishStates.idle;
+    });
+    builder.addCase(publishArticle.fulfilled, (state) => {
+      state.publishState = ArticlePublishStates.published;
+    });
+    builder.addCase(publishArticle.pending, (state) => {
+      state.publishState = ArticlePublishStates.pending;
     });
   },
 });

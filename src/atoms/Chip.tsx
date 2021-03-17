@@ -32,7 +32,6 @@ export interface ChipProps {
   onClick?: () => void;
 }
 
-// eslint-disable-next-line max-len
 const Chip: React.FC<ChipProps> = ({
   children,
   onClick,

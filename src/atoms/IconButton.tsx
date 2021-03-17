@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import { ButtonBase } from '@material-ui/core';
 
 export interface IconButtonProps {
-  children: React.ReactChildren | React.ReactChild;
-  fontSize?: number;
-  color?: string;
-  m?: string;
-  p?: string;
-  onClick?: () => void;
+  readonly children: React.ReactChildren | React.ReactChild;
+  readonly fontSize?: number;
+  readonly color?: string;
+  readonly m?: string;
+  readonly p?: string;
+  readonly onClick?: () => void;
 }
 
 const StyledButton = styled(ButtonBase)<IconButtonProps>`

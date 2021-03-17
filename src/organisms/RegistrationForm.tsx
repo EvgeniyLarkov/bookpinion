@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { LinearProgress } from '@material-ui/core';
 import { isEmpty } from 'lodash';
 import styled from 'styled-components';
 import TextBase from '../atoms/TextBase';
 import ButtonBase from '../atoms/ButtonBase';
 import { AppDispatch } from '../redux/store';
 import { registerUser, setErrors } from '../redux/ducks/profile';
-import { RootState } from '../redux/ducks';
-import { ProfileFields, ProfileStates } from '../redux/ducks/types';
+import { ProfileFields } from '../redux/ducks/types';
 import validate from '../validations';
 import C from '../validations/constants';
 import FieldWithLabel from './FieldWithLabel';
+import {
+  getNormilizedProfileErrors,
+  isProfileFetched,
+  isProfileFetching,
+  profileNameSelector,
+} from '../utils/selectors';
+import { SuccessAction } from '../atoms';
 
 // TO-DO
 // 1. Добавить селектор для нормализованных ошибок
@@ -35,15 +40,10 @@ const RegistrationForm: React.FC = () => {
   const { t } = useTranslation();
   const dispatch: AppDispatch = useDispatch();
 
-  const { state, error } = useSelector(({ profile }: RootState) => profile);
-
-  const normalizedErrors = error.reduce((acc: { [index: string]: string[] }, { msg, param }) => {
-    if (acc[param] === undefined) {
-      return { ...acc, [param]: [msg] };
-    }
-    return { ...acc, [param]: [...acc[param], msg] };
-  },
-  {});
+  const name = useSelector(profileNameSelector);
+  const isLogged = useSelector(isProfileFetched);
+  const isFetching = useSelector(isProfileFetching);
+  const normalizedErrors = useSelector(getNormilizedProfileErrors);
 
   const [username, setUsername] = useState('');
   const [firstname, setFirstname] = useState('');
@@ -81,57 +81,69 @@ const RegistrationForm: React.FC = () => {
   };
 
   return (
-    <Wrapper>
-      {state === ProfileStates.pending && <LinearProgress /> }
-      <FieldWithLabel
-        label={t('registrationForm.firstname')}
-        placeholder={t('registrationForm.firstnamePh')}
-        value={firstname}
-        onChange={handleFieldChange(setFirstname)}
-        tooltipContent={normalizedErrors.firstname}
-        isValid={isEmpty(normalizedErrors.firstname)}
-      />
-      <FieldWithLabel
-        label={t('registrationForm.lastname')}
-        placeholder={t('registrationForm.lastnamePh')}
-        value={lastname}
-        onChange={handleFieldChange(setLastname)}
-        tooltipContent={normalizedErrors.lastname}
-        isValid={isEmpty(normalizedErrors.lastname)}
-      />
-      <FieldWithLabel
-        label={t('registrationForm.username')}
-        placeholder={t('registrationForm.usernamePh')}
-        value={username}
-        onChange={handleFieldChange(setUsername)}
-        tooltipContent={normalizedErrors.username}
-        isValid={isEmpty(normalizedErrors.username)}
-      />
-      <TextBase fontSize="16px">
-        {t('registrationForm.usernameTip', { min: C.MIN_USERNAME_CHARS, max: C.MAX_USERNAME_CHARS })}
-      </TextBase>
-      <FieldWithLabel
-        label={t('registrationForm.password')}
-        placeholder={t('registrationForm.passwordPh')}
-        value={password}
-        onChange={handleFieldChange(setPassword)}
-        tooltipContent={normalizedErrors.password}
-        isValid={isEmpty(normalizedErrors.password)}
-      />
-      <FieldWithLabel
-        label={t('registrationForm.passwordRepeat')}
-        placeholder={t('registrationForm.passwordPh')}
-        value={passwordRepeat}
-        onChange={handleFieldChange(setPasswordRepeat)}
-        tooltipContent={normalizedErrors.passwordRepeat}
-        isValid={isEmpty(normalizedErrors.passwordRepeat)}
-      />
-      <ButtonBase onClick={handleRegistrationConfirm}>
-        <TextBase p="8px 0" fontWeight={400}>
-          {t('register')}
-        </TextBase>
-      </ButtonBase>
-    </Wrapper>
+    <>
+      {isLogged ? (
+        <SuccessAction h="200px">
+          {t('registrationForm.registrationSuccess', { name })}
+        </SuccessAction>
+      ) : (
+        <Wrapper>
+          <FieldWithLabel
+            label={t('registrationForm.firstname')}
+            placeholder={t('registrationForm.firstnamePh')}
+            value={firstname}
+            onChange={handleFieldChange(setFirstname)}
+            tooltipContent={normalizedErrors.firstname}
+            isValid={isEmpty(normalizedErrors.firstname)}
+            disabled={isFetching}
+          />
+          <FieldWithLabel
+            label={t('registrationForm.lastname')}
+            placeholder={t('registrationForm.lastnamePh')}
+            value={lastname}
+            onChange={handleFieldChange(setLastname)}
+            tooltipContent={normalizedErrors.lastname}
+            isValid={isEmpty(normalizedErrors.lastname)}
+            disabled={isFetching}
+          />
+          <FieldWithLabel
+            label={t('registrationForm.username')}
+            placeholder={t('registrationForm.usernamePh')}
+            value={username}
+            onChange={handleFieldChange(setUsername)}
+            tooltipContent={normalizedErrors.username}
+            isValid={isEmpty(normalizedErrors.username)}
+            disabled={isFetching}
+          />
+          <TextBase fontSize="16px">
+            {t('registrationForm.usernameTip', { min: C.MIN_USERNAME_CHARS, max: C.MAX_USERNAME_CHARS })}
+          </TextBase>
+          <FieldWithLabel
+            label={t('registrationForm.password')}
+            placeholder={t('registrationForm.passwordPh')}
+            value={password}
+            onChange={handleFieldChange(setPassword)}
+            tooltipContent={normalizedErrors.password}
+            isValid={isEmpty(normalizedErrors.password)}
+            disabled={isFetching}
+          />
+          <FieldWithLabel
+            label={t('registrationForm.passwordRepeat')}
+            placeholder={t('registrationForm.passwordPh')}
+            value={passwordRepeat}
+            onChange={handleFieldChange(setPasswordRepeat)}
+            tooltipContent={normalizedErrors.passwordRepeat}
+            isValid={isEmpty(normalizedErrors.passwordRepeat)}
+            disabled={isFetching}
+          />
+          <ButtonBase onClick={handleRegistrationConfirm}>
+            <TextBase p="8px 0" fontWeight={400}>
+              {t('register')}
+            </TextBase>
+          </ButtonBase>
+        </Wrapper>
+      )}
+    </>
   );
 };
 

@@ -1,12 +1,13 @@
 import { AsyncThunk, createAsyncThunk } from '@reduxjs/toolkit';
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosRequestConfig } from 'axios';
 import { uniqueId } from 'lodash';
+import type { RootState } from '../redux/ducks';
 import { ErrorStatus, ServerErrorResponse } from './types';
 
 // eslint-disable-next-line import/prefer-default-export
 export function asyncFetchActionCreator<U, R>(
   actionName: string,
-  func: (payload: R) => Promise<U>,
+  func: (payload: R, options?: AxiosRequestConfig) => Promise<U>,
 ): AsyncThunk<U, R, {
     rejectValue: ServerErrorResponse<ErrorStatus>
   }> {
@@ -14,9 +15,18 @@ export function asyncFetchActionCreator<U, R>(
     rejectValue: ServerErrorResponse<ErrorStatus>
   }>(
     actionName,
-    async (payload, { rejectWithValue }) => {
+    async (payload, { rejectWithValue, getState }) => {
       try {
-        const response = await func(payload);
+        const state = getState() as RootState;
+        const { token } = state.profile;
+
+        const options: AxiosRequestConfig = {
+          headers: {
+            Authorization: (token) ? `Bearer ${token}` : null,
+          },
+        };
+
+        const response = await func(payload, options);
         return response;
       } catch (err) {
         const error: AxiosError<ServerErrorResponse<ErrorStatus>> = err;

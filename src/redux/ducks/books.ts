@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { asyncFetchActionCreator } from '../../api/asyncActions';
-import { fetchBookById } from '../../api/bookApi';
+import { fetchBookById, updateBook } from '../../api/bookApi';
 import { isValidationError } from '../../api/types';
 import { BooksInterface, BooksStates } from './types';
 
@@ -12,6 +12,7 @@ const initialState: BooksInterface = {
 };
 
 export const getBookById = asyncFetchActionCreator('books/fetchBooks', fetchBookById);
+export const updateBookById = asyncFetchActionCreator('books/updateBook', updateBook);
 
 const booksSlice = createSlice({
   name: 'books',

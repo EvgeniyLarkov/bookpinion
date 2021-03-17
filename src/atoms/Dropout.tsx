@@ -1,9 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Dropout = styled.div`
+export interface DropoutInterface {
+  readonly visible: boolean;
+  readonly fullWidth?: boolean;
+  readonly children: React.ReactNode;
+}
+
+const Dropout = styled.div<DropoutInterface>`
   position: absolute;
-  width: 100%;
+  width: ${(props) => ((props.fullWidth) ? 'min-content' : '100%')};
   max-height: 400px;
   overflow-y: auto;
   background-color: ${(props) => props.theme.palette.main};
@@ -12,18 +18,14 @@ const Dropout = styled.div`
   top: calc(100% + 8px);
   left: 50%;
   transform: translateX(-50%);
-  display: ${(props: DropoutInterface) => ((props.visible) ? 'block' : 'none')};
+  display: ${(props) => ((props.visible) ? 'block' : 'none')};
   z-index: 200;
 `;
-
-interface DropoutInterface {
-  visible: boolean
-  children: React.ReactChild
-}
 
 const DropoutBase: React.FC<DropoutInterface> = ({
   visible,
   children,
-}: DropoutInterface) => <Dropout visible={visible}>{children}</Dropout>;
+  fullWidth = false,
+}: DropoutInterface) => <Dropout visible={visible} fullWidth={fullWidth}>{children}</Dropout>;
 
 export default DropoutBase;

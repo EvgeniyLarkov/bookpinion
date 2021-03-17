@@ -1,8 +1,9 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { BookGetResponse, BookRequest, ServerSuccessResponse } from './types';
+import { ExtendedBookInterface } from '../redux/ducks/types';
 import paths from '../paths';
 
-const fetchBookById = async (
+export const fetchBookById = async (
   input: BookRequest,
 ): Promise<ServerSuccessResponse<BookGetResponse>> => {
   const data = await axios
@@ -11,5 +12,16 @@ const fetchBookById = async (
   return data;
 };
 
-// eslint-disable-next-line import/prefer-default-export
-export { fetchBookById };
+export const updateBook = async (
+  input: Partial<ExtendedBookInterface<string>> & Pick<ExtendedBookInterface<string>, 'id'>,
+  options: AxiosRequestConfig = {},
+): Promise<ServerSuccessResponse<BookGetResponse>> => {
+  const data = await axios
+    .put<ServerSuccessResponse<BookGetResponse>>(
+    paths.bookUpdatePath({ id: input.id }),
+    input,
+    options,
+  )
+    .then((response) => response.data);
+  return data;
+};

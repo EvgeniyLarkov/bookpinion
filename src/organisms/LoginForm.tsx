@@ -9,12 +9,15 @@ import { loginByUsername, setErrors } from '../redux/ducks/profile';
 import TextBase from '../atoms/TextBase';
 import { openModal } from '../redux/ducks/modal';
 import { ModalVariants, ProfileFields } from '../redux/ducks/types';
-import { RootState } from '../redux/ducks';
 import validate from '../validations';
 import FieldWithLabel from './FieldWithLabel';
-
-// TO-DO
-// 1. Сделать как в регистрации
+import {
+  getNormilizedProfileErrors,
+  isProfileFetched,
+  isProfileFetching,
+  profileNameSelector,
+} from '../utils/selectors';
+import { SuccessAction } from '../atoms';
 
 const Wrapper = styled.div`
     display: grid;
@@ -30,15 +33,10 @@ const LoginForm: React.FC = () => {
 
   const dispatch: AppDispatch = useDispatch();
 
-  const { error } = useSelector(({ profile }: RootState) => profile);
-
-  const normalizedErrors = error.reduce((acc: { [index: string]: string[] }, { msg, param }) => {
-    if (acc[param] === undefined) {
-      return { ...acc, [param]: [msg] };
-    }
-    return { ...acc, [param]: [...acc[param], msg] };
-  },
-  {});
+  const name = useSelector(profileNameSelector);
+  const isLogged = useSelector(isProfileFetched);
+  const isFetching = useSelector(isProfileFetching);
+  const normalizedErrors = useSelector(getNormilizedProfileErrors);
 
   const handleFieldChange = (setter: typeof setUsername) => (
     ev: React.ChangeEvent<HTMLInputElement>,
@@ -67,30 +65,41 @@ const LoginForm: React.FC = () => {
 
   return (
     <Wrapper>
-      <FieldWithLabel
-        placeholder={t('loginForm.usernamePh')}
-        value={username}
-        onChange={handleFieldChange(setUsername)}
-        tooltipContent={normalizedErrors.username}
-        isValid={isEmpty(normalizedErrors.username)}
-      />
-      <FieldWithLabel
-        placeholder={t('loginForm.passwordPh')}
-        value={password}
-        onChange={handleFieldChange(setPassword)}
-        tooltipContent={normalizedErrors.password}
-        isValid={isEmpty(normalizedErrors.password)}
-      />
-      <ButtonBase onClick={handleSubmit}>
-        <TextBase p="8px 0" fontWeight={400}>
-          {t('loginForm.loginButton')}
-        </TextBase>
-      </ButtonBase>
-      <ButtonBase onClick={handleRegisterClick}>
-        <TextBase p="8px 0" fontWeight={400}>
-          {t('register')}
-        </TextBase>
-      </ButtonBase>
+      {isLogged ? (
+        <SuccessAction h="200px">
+          {t('loginForm.loginSuccess', { name })}
+        </SuccessAction>
+      ) : (
+        <>
+          <FieldWithLabel
+            placeholder={t('loginForm.usernamePh')}
+            value={username}
+            onChange={handleFieldChange(setUsername)}
+            tooltipContent={normalizedErrors.username}
+            isValid={isEmpty(normalizedErrors.username)}
+            disabled={isFetching}
+          />
+          <FieldWithLabel
+            placeholder={t('loginForm.passwordPh')}
+            value={password}
+            onChange={handleFieldChange(setPassword)}
+            tooltipContent={normalizedErrors.password}
+            isValid={isEmpty(normalizedErrors.password)}
+            disabled={isFetching}
+          />
+          <ButtonBase onClick={handleSubmit}>
+            <TextBase p="8px 0" fontWeight={400}>
+              {t('loginForm.loginButton')}
+            </TextBase>
+          </ButtonBase>
+          <ButtonBase onClick={handleRegisterClick}>
+            <TextBase p="8px 0" fontWeight={400}>
+              {t('register')}
+            </TextBase>
+          </ButtonBase>
+        </>
+      )}
+
     </Wrapper>
   );
 };

@@ -13,7 +13,8 @@
     "loginForm": {
         "usernamePh": "имя пользователя",
         "passwordPh": "пароль",
-        "loginButton": "Войти"
+        "loginButton": "Войти",
+        "loginSuccess": "С возвращением, {{name}}"
     },
     "registrationForm": {
         "firstname": "Имя",
@@ -25,7 +26,8 @@
         "passwordRepeat": "Повторите пароль",
         "username": "Выберите имя пользователя",
         "usernamePh": "billgates2000",
-        "usernameTip": "Имя пользователя может содержать только латинские буквы и цифры. Минимальная длинна - {{min}} символов, максимальная - {{max}} символов"
+        "usernameTip": "Имя пользователя может содержать только латинские буквы и цифры. Минимальная длинна - {{min}} символов, максимальная - {{max}} символов",
+        "registrationSuccess": "Добро пожаловать, {{name}}!"
     },
     "validationErrors": {
         "isEmpty": "поле {{field}} не должно быть пустым",

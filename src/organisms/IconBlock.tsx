@@ -93,7 +93,6 @@ const IconBlock: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [languageTabOpen, setLanguageTabOpen] = useState(false);
 
   const { state, name } = useSelector(({ profile }: RootState) => profile);
 
@@ -103,10 +102,6 @@ const IconBlock: React.FC = () => {
 
   const handleMenuClick = () => {
     setMenuOpen(!menuOpen);
-  };
-
-  const handlelanguageTabClick = () => {
-    setLanguageTabOpen(!languageTabOpen);
   };
 
   const handleLanguageSelect = (lang: string) => () => {
@@ -132,7 +127,7 @@ const IconBlock: React.FC = () => {
         <Search className="menu-option__search" />
         <div className="dropout-container">
           <SelectBase title={(
-            <IconButton onClick={handlelanguageTabClick}>
+            <IconButton>
               <div className="menu-option">
                 <Language />
                 <TextBase className="menu-option__secondary-text" p="0 12px 0 0">{t('language')}</TextBase>

@@ -4,6 +4,7 @@ import {
 } from 'react-router-dom';
 import BookDescription from '../molecules/BookDescription';
 import Header from '../molecules/Header';
+import BaseModal from '../molecules/Modal';
 import Template from './Template';
 
 const Book:React.FC = () => {
@@ -20,6 +21,7 @@ const Book:React.FC = () => {
           Choose a book
         </Route>
       </Switch>
+      <BaseModal />
     </Template>
   );
 };

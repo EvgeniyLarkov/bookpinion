@@ -2,24 +2,21 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Dropout from './Dropout';
 
-const Wrapper = styled.div`
-  position: relative;
-  display: inline-block;
-`;
-
 type OptionInterface = {
   children: string | React.ReactChild;
   handler: () => void;
 };
 
-export interface SelectProps {
-  visible: boolean;
+export interface SelectInterface {
+  children: React.ReactNode;
+  title: string | React.ReactChild
+  fullWidth?: boolean
 }
 
-export interface SelectInterface {
-  children: React.ReactChild;
-  title: string | React.ReactChild
-}
+const Wrapper = styled.div`
+  position: relative;
+  display: inline-block;
+`;
 
 const SelectOption = styled.button`
   display: block;
@@ -42,6 +39,7 @@ export const Option:React.FC<OptionInterface> = ({
 const SelectBase:React.FC<SelectInterface> = ({
   children,
   title,
+  fullWidth = false,
 }: SelectInterface) => {
   const [visible, setVisible] = useState(false);
 
@@ -61,7 +59,7 @@ const SelectBase:React.FC<SelectInterface> = ({
       onBlur={handleLeave}
     >
       {title}
-      <Dropout visible={visible}>
+      <Dropout visible={visible} fullWidth={fullWidth}>
         {children}
       </Dropout>
     </Wrapper>

@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { uniqueId } from 'lodash';
 import InputBase from './InputBase';
 import TextBase from './TextBase';
 import Dropout from './Dropout';
@@ -56,6 +55,7 @@ const SelectExtended:React.FC<SelectInterface> = ({
 }: SelectInterface) => {
   const [input, setInput] = useState('');
   const [visible, setVisible] = useState(false);
+  const [data, setData] = useState<{ [key: string]: OptionsType[] }>({});
 
   const handleFocus = () => {
     setVisible(true);
@@ -77,13 +77,20 @@ const SelectExtended:React.FC<SelectInterface> = ({
     setVisible(false);
   };
 
-  const dataToShow = (withAutocomplete) ? options.reduce<{ [key: string]: OptionsType[] }>((acc, { label = 'default', title, value }) => {
-    if (!title.includes(input)) return { ...acc };
-    if (acc[label]) {
-      return { ...acc, [label]: [...acc[label], { title, value }] };
+  useEffect(() => {
+    if (withAutocomplete) {
+      const result = options.reduce<{ [key: string]: OptionsType[] }>((acc, { label = 'default', title, value }) => {
+        if (!title.includes(input)) return { ...acc };
+        if (acc[label]) {
+          return { ...acc, [label]: [...acc[label], { title, value }] };
+        }
+        return { ...acc, [label]: [{ title, value }] };
+      }, {});
+      setData(result);
+    } else {
+      setData({ default: options });
     }
-    return { ...acc, [label]: [{ title, value }] };
-  }, {}) : { default: options };
+  }, [withAutocomplete, options]);
 
   return (
     <Wrapper
@@ -98,14 +105,14 @@ const SelectExtended:React.FC<SelectInterface> = ({
       <Dropout visible={visible}>
         <>
           {
-            Object.keys(dataToShow).map((label) => (
-              <div key={`${uniqueId()}`}>
+            Object.keys(data).map((label) => (
+              <div key={`showdata_${label}`}>
                 {(label !== 'default') && <TextBase fontWeight={500} p="8px 16px">{label}</TextBase>}
 
-                {dataToShow[label].map(({ value, title }) => (
+                {data[label].map(({ value, title }) => (
                   <SelectOption
                     onClick={handleChooseOption(value, title)}
-                    key={`${title}_${uniqueId()}`}
+                    key={`${title}_${value}`}
                   >
                     <TextBase p="0 8px">
                       {title}

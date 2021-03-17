@@ -18,6 +18,7 @@ import { publishArticle, setArticleError } from '../redux/ducks/articles';
 import { Tooltip } from '../organisms';
 import { RootState } from '../redux/ducks';
 import C from '../validations/constants';
+import { getNormilizedArticleErrors } from '../utils/selectors';
 
 const Outer = styled.div`
     display: inline-block;
@@ -94,16 +95,9 @@ const InputBlock: React.FC = () => {
   const [bookId, setBookId] = useState('');
   const [previewData, setPreviewData] = useState<OptionsType[]>([{ label: '', title: 'pending', value: 'null' }]);
 
-  const { error } = useSelector(({ articles }: RootState) => articles);
   const { booksPreview: preview } = useSelector(({ meta }: RootState) => meta);
 
-  const normalizedErrors = error.reduce((acc: { [index: string]: string[] }, { msg, param }) => {
-    if (acc[param] === undefined) {
-      return { ...acc, [param]: [msg] };
-    }
-    return { ...acc, [param]: [...acc[param], msg] };
-  },
-  {});
+  const normalizedErrors = useSelector(getNormilizedArticleErrors);
 
   const handleSetArticleText = (ev: React.ChangeEvent<HTMLTextAreaElement>) => {
     setArticle(ev.target.value);
@@ -112,7 +106,7 @@ const InputBlock: React.FC = () => {
   const handleSetRating = (value: number) => () => {
     setRating(value);
   };
-
+  console.log(bookId);
   const handleSetBook = (id: string) => {
     setBookId(id);
   };
@@ -120,10 +114,10 @@ const InputBlock: React.FC = () => {
   useEffect(() => {
     const sortByAuthors = (preview === null)
       ? [{ value: '', title: 'No data' }]
-      : preview.reduce<OptionsType[]>((acc, { _id, title, authors }) => {
+      : preview.reduce<OptionsType[]>((acc, { id, title, authors }) => {
         const sorted = authors.map((author: string) => ({
           label: author,
-          value: _id,
+          value: id,
           title,
         }));
         return [...acc, ...sorted];

@@ -22,6 +22,12 @@ export enum ArticlesStates {
   'fetched',
 }
 
+export enum ArticlePublishStates {
+  'idle',
+  'pending',
+  'published',
+}
+
 export enum MetaStates {
   'idle',
   'pending',
@@ -36,6 +42,7 @@ export enum ErrorsStates {
 export enum ModalVariants {
   'login',
   'registration',
+  'updateBookData',
 }
 
 export enum ProfileFields {
@@ -59,6 +66,7 @@ export interface ProfileInfo {
   surname: string | null
   status: ProfileStatusStates
   token: string | null
+  isAdmin: boolean
 }
 
 export interface ProfileInterface extends ProfileInfo {
@@ -75,12 +83,13 @@ export interface BookInterface {
 export interface ExtendedBookInterface<K> extends BookInterface {
   id: K
   description: string
-  imageLinks: { small: string, normal: string }
+  category?: string[]
+  imageLinks: { small: string, normal: string, big?: string }
   link: string
 }
 
 export type BookPreviewType = {
-  _id: string;
+  id: string;
   authors: string[];
   title: string;
 };
@@ -108,6 +117,7 @@ export interface ExtendedArticleInterface<K> extends ArticleInterface {
 
 export interface ArticlesInterface {
   state: ArticlesStates,
+  publishState: ArticlePublishStates,
   data: { [K in AllIDs]: ExtendedArticleInterface<K>},
   allIDs: AllIDs[],
   error: ValidationError[],

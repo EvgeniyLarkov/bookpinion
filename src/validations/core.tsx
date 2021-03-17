@@ -20,7 +20,7 @@ export const defaultValidations = (
   if (validator.isEmpty(data)) {
     defaultErrors = [...defaultErrors, i18n.t('validationErrors.isEmpty', { field })];
   }
-  if (!validator.isAlphanumeric(data)) {
+  if (!validator.matches(data, '^[a-zA-Z0-9-_. ]+$')) {
     defaultErrors = [...defaultErrors, i18n.t('validationErrors.isAlphanumeric', { field })];
   }
   return { data, errors: defaultErrors, field };

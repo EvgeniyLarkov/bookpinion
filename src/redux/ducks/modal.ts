@@ -6,9 +6,14 @@ export enum ModalStates {
   'open',
 }
 
+interface UpdateBookDataInterface {
+  id: string;
+}
+
 export interface ModalData {
   variant: ModalVariants | null
   label: string
+  data?: null | UpdateBookDataInterface
 }
 
 export interface ModalInterface extends ModalData {
@@ -19,6 +24,7 @@ const initialState: ModalInterface = {
   state: ModalStates.closed,
   variant: null,
   label: '',
+  data: null,
 };
 
 const modalSlice = createSlice({
@@ -29,11 +35,15 @@ const modalSlice = createSlice({
       state.state = ModalStates.open;
       state.variant = action.payload.variant;
       state.label = action.payload.label;
+      if (action.payload.data) {
+        state.data = action.payload.data;
+      }
     },
     close(state) {
       state.state = ModalStates.closed;
       state.variant = null;
       state.label = '';
+      state.data = null;
     },
   },
 });

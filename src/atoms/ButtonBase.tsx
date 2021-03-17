@@ -8,10 +8,10 @@ export interface ButtonProps {
   onClick?: () => void;
 }
 
-const StyledButton = styled(MaterialButton)`
+const StyledButton = styled(MaterialButton)<ButtonProps>`
       && {
           display: 'inline-block';
-          border-radius: ${(props: ButtonProps) => `${props.borderRadius || 8}px`};
+          border-radius: ${(props) => `${props.borderRadius || 8}px`};
           background-color: ${(props) => props.theme.palette.main};
           &:hover {
               background-color: ${(props) => props.theme.palette.mainDark};

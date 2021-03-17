@@ -7,11 +7,12 @@ import mainTheme from '../styles/theme';
 
 export interface FieldWithLabelProps {
   label?: string
-  placeholder: string
+  placeholder?: string
   value: string,
   tooltipContent?: string[] | string,
   onChange: (ev: React.ChangeEvent<HTMLInputElement>) => void
   isValid?: boolean
+  disabled?: boolean
 }
 
 const StyledField = styled.div`
@@ -21,7 +22,8 @@ const StyledField = styled.div`
 `;
 
 const FieldWithLabel: React.FC<FieldWithLabelProps> = ({
-  label, placeholder, value, onChange: handler, tooltipContent, isValid = true,
+  label, placeholder = '', value, onChange: handler, tooltipContent, isValid = true,
+  disabled = false,
 }: FieldWithLabelProps) => {
   const [visible, setVisible] = useState(false);
 
@@ -47,6 +49,7 @@ const FieldWithLabel: React.FC<FieldWithLabelProps> = ({
         onMouseOver={handleMouseOver}
         onMouseLeave={handleMouseLeave}
         borderColor={isValid ? undefined : mainTheme.palette.negative}
+        disabled={disabled}
       />
       {tooltipContent && <Tooltip visible={visible}>{tooltipContent}</Tooltip>}
     </StyledField>

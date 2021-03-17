@@ -14,6 +14,7 @@ module.exports = {
   ],
   plugins: [
     ["@babel/transform-runtime"],
+    ["@babel/plugin-proposal-do-expressions"],
     [
       "babel-plugin-styled-components",
       {

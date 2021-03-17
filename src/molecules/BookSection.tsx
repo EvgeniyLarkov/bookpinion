@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable react/no-array-index-key */
+import React from 'react';
+import { useSelector } from 'react-redux';
 import styled, { keyframes } from 'styled-components';
-import {
-  Link,
-} from 'react-router-dom';
-import { isNull, uniqueId } from 'lodash';
+import { Link } from 'react-router-dom';
+import { uniqueId } from 'lodash';
 import { Card } from '../atoms';
 import { ExtendedBookInterface, ExtendedArticleInterface } from '../redux/ducks/types';
-
-// TO-DO
-// Set Page перенести в дочерний блок
+import { BookPictureExtended } from '../organisms';
+import { isArticlesFetching, isBooksFetching } from '../utils/selectors';
 
 const Grid = styled.section`
     padding-top: 32px;
@@ -33,6 +32,10 @@ const LinkInGrid = styled(Link)<{ gridArea: string }>`
   grid-area: ${(props) => props.gridArea};
 `;
 
+const CardInGrid = styled(Card)<{ gridArea: string }>`
+  grid-area: ${(props) => props.gridArea};
+`;
+
 const LoadingEffect = keyframes`
   0% {
       background-position: 0;
@@ -52,13 +55,6 @@ const CardLoading = styled.div<{ gridArea?: string, h?: number }>`
   overflow: hidden;
 `;
 
-const BookImg = styled.img.attrs((props) => ({ src: props.src }))`
-    box-shadow: ${(props) => props.theme.shadow.light};
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-`;
-
 export interface BookSectionInterface {
   books: (ExtendedBookInterface<string> | null)[]
   articles: (ExtendedArticleInterface<string> | null)[]
@@ -70,42 +66,39 @@ const BookSection: React.FC<BookSectionInterface> = (
     articles,
   }: BookSectionInterface,
 ) => {
-  const [loadingState, setLoadingState] = useState(false);
-
-  useEffect(() => {
-    if (books.some(isNull) || articles.some(isNull)) {
-      setLoadingState(true);
-    } else {
-      setLoadingState(false);
-    }
-  }, [books, articles]);
+  const isBooksLoading = useSelector(isBooksFetching);
+  const isArticlesLoading = useSelector(isArticlesFetching);
+  const isLoading = (isBooksLoading || isArticlesLoading);
 
   return (
     <>
       <Grid>
-        {articles.map((article, index) => ((loadingState || !article)
+        {articles.map((article, index) => ((isLoading || !article)
           ? (
             <>
-              <CardLoading gridArea={`a${index + 1}`} h={200} />
-              <CardLoading gridArea={`b${index + 1}`} h={600} />
+              <CardLoading gridArea={`a${index + 1}`} h={200} key={`load_a_${index}`} />
+              <CardLoading gridArea={`b${index + 1}`} h={600} key={`load_b_${index}`} />
             </>
           )
           : (
             <>
-              <Card
+              <CardInGrid
                 gridArea={`a${index + 1}`}
                 label={article.title}
                 username={article.username}
                 article={article.article}
                 reaction={article.rating}
-                key={uniqueId('article')}
+                key={`article_${index}`}
               />
               {(books[index])
                 && (
-                  <LinkInGrid to={`books/${books[index]?.id}`} gridArea={`b${index + 1}`}>
-                    <BookImg
-                      src={books[index]?.imageLinks.normal || books[index]?.imageLinks.small || ''}
-                      key={uniqueId('book')}
+                  <LinkInGrid
+                    to={`books/${books[index]?.id}`}
+                    gridArea={`b${index + 1}`}
+                    key={uniqueId('book')}
+                  >
+                    <BookPictureExtended
+                      book={books[index] as ExtendedBookInterface<string>}
                     />
                   </LinkInGrid>
                 )}
