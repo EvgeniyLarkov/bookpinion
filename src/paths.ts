@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
-const host = process.env.SERVER_URL || 'http://127.0.0.1:3055';
+const host = process.env.NODE_ENV === 'development'
+  ? 'http://127.0.0.1:3055' : 'https://bookpinion.herokuapp.com';
 
 export default {
   authPath: (): string => [host, 'api/auth/'].join('/'),

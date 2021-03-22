@@ -8,7 +8,7 @@ i18n
     resources,
     lng: ['en', 'ru'],
     fallbackLng: ['en', 'ru'],
-    debug: true,
+    debug: process.env.NODE_ENV === 'development',
 
     interpolation: {
       escapeValue: false,
