@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useRouteMatch } from 'react-router';
+import { useHistory, useLocation, useRouteMatch } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import Header from '../molecules/Header';
@@ -23,7 +23,6 @@ import {
 } from '../utils/selectors';
 
 // TO-DO
-// History криво работает, добавить связь между query и view
 // Нужен рефактор
 
 const Wrapper = styled.div`
@@ -39,6 +38,7 @@ const Home: React.FC = () => {
   const { t } = useTranslation();
 
   const { path } = useRouteMatch();
+  const location = useLocation();
   const history = useHistory();
 
   const [state, setState] = useState<{ pageNumber: number, activeCategory: string | null}>({
@@ -53,7 +53,18 @@ const Home: React.FC = () => {
   const categories = useSelector(({ meta }: RootState) => meta.categories);
 
   const setActiveCategory = (category: string | null) => {
-    setState({ pageNumber: 1, activeCategory: category });
+    if (category !== null) {
+      const search = new URLSearchParams(({ category }));
+
+      history.push({
+        pathname: path,
+        search: `?${search}`,
+      });
+    } else {
+      history.push({
+        pathname: path,
+      });
+    }
   };
 
   const setPage = (page: number) => {
@@ -63,6 +74,16 @@ const Home: React.FC = () => {
   useEffect(() => {
     dispatch(getMetaData(''));
   }, []);
+
+  useEffect(() => {
+    const queryCategory = new URLSearchParams(location.search).get('category');
+
+    if (queryCategory !== undefined && queryCategory !== state.activeCategory) {
+      setState({ ...state, activeCategory: queryCategory });
+    } else {
+      setState({ ...state, activeCategory: null });
+    }
+  }, [location.search]);
 
   useEffect(() => {
     const start = C.ARTICLES_PER_PAGE * (state.pageNumber - 1);
@@ -82,20 +103,6 @@ const Home: React.FC = () => {
       dispatch(getBookById({ id: ids.map((id) => ['id', id]) }));
     }
   }, [articles]);
-
-  useEffect(() => {
-    if (state.activeCategory !== null) {
-      const search = new URLSearchParams(({ category: state.activeCategory }));
-      history.push({
-        pathname: path,
-        search: `?${search}`,
-      });
-    } else {
-      history.push({
-        pathname: path,
-      });
-    }
-  }, [state.activeCategory]);
 
   return (
     <Template>

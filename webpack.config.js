@@ -10,6 +10,14 @@ const outputPath = join(process.cwd(), "/dist");
 const options = {
   hmr: isDev,
   static: outputPath,
+  historyFallback: {
+    rewrites: [
+      {
+        from: '/wps',
+        to: (context) => (context.parsedUrl.pathname),
+      },
+    ],
+  },
   /* middleware: (app, builtins) => {
     app.use(builtins.proxy('/api', { target: 'https://localhost:3055' }));
   } */

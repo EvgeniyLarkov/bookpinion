@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
 import SendIcon from '@material-ui/icons/Send';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
@@ -9,16 +8,8 @@ import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissa
 import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
 import {
   IconButton, Option, SelectBase, SelectExtended, TextAreaBase, TextBase, TitleBase,
-} from '../atoms';
-import { OptionsType } from '../atoms/SelectExtended';
-import validate from '../validations';
-import { ArticleFields } from '../redux/ducks/types';
-import { AppDispatch } from '../redux/store';
-import { publishArticle, setArticleError } from '../redux/ducks/articles';
-import { Tooltip } from '../organisms';
-import { RootState } from '../redux/ducks';
-import C from '../validations/constants';
-import { getNormilizedArticleErrors } from '../utils/selectors';
+} from '../../../atoms';
+import C from '../../../validations/constants';
 
 const Outer = styled.div`
     display: inline-block;
@@ -88,54 +79,6 @@ const NegativeIcon = styled(SentimentVeryDissatisfiedIcon)`&& { font-size: 50px 
 
 const InputBlock: React.FC = () => {
   const { t } = useTranslation();
-  const dispatch: AppDispatch = useDispatch();
-
-  const [article, setArticle] = useState('');
-  const [rating, setRating] = useState(C.MAX_BOOK_RATING / 2);
-  const [bookId, setBookId] = useState('');
-  const [previewData, setPreviewData] = useState<OptionsType[]>([{ label: '', title: 'pending', value: 'null' }]);
-
-  const { booksPreview: preview } = useSelector(({ meta }: RootState) => meta);
-
-  const normalizedErrors = useSelector(getNormilizedArticleErrors);
-
-  const handleSetArticleText = (ev: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setArticle(ev.target.value);
-  };
-
-  const handleSetRating = (value: number) => () => {
-    setRating(value);
-  };
-
-  const handleSetBook = (id: string) => {
-    setBookId(id);
-  };
-
-  useEffect(() => {
-    const sortByAuthors = (preview === null)
-      ? [{ value: '', title: 'No data' }]
-      : preview.reduce<OptionsType[]>((acc, { id, title, authors }) => {
-        const sorted = authors.map((author: string) => ({
-          label: author,
-          value: id,
-          title,
-        }));
-        return [...acc, ...sorted];
-      }, []);
-
-    setPreviewData(sortByAuthors);
-  }, [preview]);
-
-  const handleSendArticle = () => {
-    const articleTextErrors = validate(ArticleFields.article, article);
-    const allErrors = [...articleTextErrors];
-    if (!isEmpty(allErrors)) {
-      dispatch(setArticleError(allErrors));
-    } else {
-      dispatch(publishArticle({ article, bookId, rating }));
-    }
-  };
-
   return (
     <Outer>
       <Inner>

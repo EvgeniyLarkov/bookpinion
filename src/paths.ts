@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const host = 'http://127.0.0.1:3055';
+const host = process.env.SERVER_URL || 'http://127.0.0.1:3055';
 
 export default {
   authPath: (): string => [host, 'api/auth/'].join('/'),
