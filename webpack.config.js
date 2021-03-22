@@ -76,6 +76,9 @@ module.exports = {
     isDev && new ForkTsCheckerWebpackPlugin(),
     new ProvidePlugin({
       process: 'process/browser',
+    }),
+    new HtmlWebpackPlugin({
+      template: `/public/index.html`
     })
   ].filter(Boolean),
   resolve: {
