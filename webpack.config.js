@@ -4,6 +4,7 @@ const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const { WebpackPluginServe: Serve } = require("webpack-plugin-serve");
 
 const { join } = require("path");
+const { ProvidePlugin } = require("webpack");
 
 const isDev = process.env.NODE_ENV !== "production";
 const outputPath = join(process.cwd(), "/dist");
@@ -73,9 +74,9 @@ module.exports = {
     isDev && new Serve(options),
     isDev && new ReactRefreshWebpackPlugin(),
     isDev && new ForkTsCheckerWebpackPlugin(),
-    new HtmlWebpackPlugin({
-      template: `${__dirname}/public/index.html`,
-    }),
+    new ProvidePlugin({
+      process: 'process/browser',
+    })
   ].filter(Boolean),
   resolve: {
     extensions: [".js", ".ts", ".jsx", ".tsx"],
