@@ -80,5 +80,5 @@ module.exports = {
   resolve: {
     extensions: [".js", ".ts", ".jsx", ".tsx"],
   },
-  watch: true,
+  watch: isDev,
 };
