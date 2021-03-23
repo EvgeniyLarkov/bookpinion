@@ -14,8 +14,13 @@ const Wrapper = styled.div`
     flex-wrap: nowrap;
     margin: 128px 0;
 
+    .bookimage {
+      flex-basis: 30%;
+    }
+
     .bookinfo {
-      margin-left: 36px; 
+      margin-left: 36px;
+      flex-basis: 70%;
     }
 
     .bookinfo__title {
@@ -52,6 +57,7 @@ const BookDescription: React.FC = () => {
         <>
           <BookPictureExtended
             book={book}
+            className="bookimage"
           />
           <div className="bookinfo">
             <div className="bookinfo__title">

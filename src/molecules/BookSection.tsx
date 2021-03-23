@@ -12,11 +12,12 @@ import { isArticlesFetching, isBooksFetching } from '../utils/selectors';
 const Grid = styled.section`
     padding-top: 32px;
     display: block;
+    max-width: inherit;
 
     @media screen and (min-width: 60em) {
       display: grid;
       grid-gap: 12px;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       grid-template-areas: 
       "a1 b2 a3"
       "b1 b2 b3"
@@ -84,7 +85,7 @@ const BookSection: React.FC<BookSectionInterface> = (
             <>
               <CardInGrid
                 gridArea={`a${index + 1}`}
-                label={article.title}
+                label={books[index]?.title || ''}
                 username={article.username}
                 article={article.article}
                 reaction={article.rating}

@@ -25,7 +25,7 @@ const options = {
 };
 
 module.exports = {
-  entry: ["./src/index.jsx", "webpack-plugin-serve/client"],
+  entry: isDev ? ["./src/index.jsx", "webpack-plugin-serve/client"] : "./src/index.jsx",
   mode: isDev ? "development" : "production",
   devtool: isDev ? "source-map" : false,
   watch: isDev,

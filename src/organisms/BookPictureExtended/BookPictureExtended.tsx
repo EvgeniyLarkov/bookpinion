@@ -7,12 +7,12 @@ import { AppDispatch } from '../../redux/store';
 import BookPictureBlock from './components';
 import useAdminFunctions from './hooks/useAdminFunctions';
 
-export interface BookPictureExtendedInterface {
+export interface BookPictureExtendedInterface extends React.HTMLAttributes<HTMLDivElement> {
   book: ExtendedBookInterface<string>
 }
 
 export const BookPictureExtended: React.FC<BookPictureExtendedInterface> = (
-  { book }: BookPictureExtendedInterface,
+  { book, ...rest }: BookPictureExtendedInterface,
 ) => {
   const dispatch: AppDispatch = useDispatch();
   const { isAdmin } = useAdminFunctions();
@@ -32,6 +32,7 @@ export const BookPictureExtended: React.FC<BookPictureExtendedInterface> = (
       isAdmin={isAdmin}
       handleUpdateData={handleOpenUpdateModal}
       handleRemoveData={handleRemove}
+      {...rest}
     />
   );
 };

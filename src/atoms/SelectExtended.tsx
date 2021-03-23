@@ -90,7 +90,7 @@ const SelectExtended:React.FC<SelectInterface> = ({
     } else {
       setData({ default: options });
     }
-  }, [withAutocomplete, options]);
+  }, [withAutocomplete, options, input]);
 
   return (
     <Wrapper

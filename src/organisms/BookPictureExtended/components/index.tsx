@@ -9,6 +9,7 @@ import { ExtendedBookInterface } from '../../../redux/ducks/types';
 const Wrapper = styled.div`
     position: relative;
     width: 100%;
+    height: 100%;
 `;
 
 const Container = styled.div<{ visible: boolean }>`
@@ -18,7 +19,7 @@ const Container = styled.div<{ visible: boolean }>`
     right: 16px;
 `;
 
-export interface BookPictureBlockInterface {
+export interface BookPictureBlockInterface extends React.HTMLAttributes<HTMLDivElement> {
   book: ExtendedBookInterface<string>
   isAdmin: boolean
   handleUpdateData: () => void
@@ -30,17 +31,18 @@ const BookPictureBlock: React.FC<BookPictureBlockInterface> = ({
   isAdmin,
   handleUpdateData,
   handleRemoveData,
+  ...rest
 }: BookPictureBlockInterface) => {
   const { big, normal, small } = book.imageLinks;
   return (
-    <Wrapper>
+    <Wrapper {...rest}>
       <Container visible={isAdmin}>
         <SelectBase title={<IconButton><SettingsIcon /></IconButton>} fullWidth>
           <Option handler={handleUpdateData}>Update data</Option>
           <Option handler={handleRemoveData}>Remove data</Option>
         </SelectBase>
       </Container>
-      <BookPicture src={big || normal || small || ''} />
+      <BookPicture src={big || normal || small || ''} alt={book.title} />
     </Wrapper>
   );
 };
