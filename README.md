@@ -10,6 +10,7 @@
 - React
 - Redux
 - Typescript
+- React-router
 - Styled-components
 - i18next 
 - RTK
