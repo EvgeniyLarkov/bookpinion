@@ -2,9 +2,9 @@ import React from 'react';
 import {
   Route, Switch, useRouteMatch,
 } from 'react-router-dom';
-import BookDescription from '../molecules/BookDescription';
-import Header from '../molecules/Header';
-import BaseModal from '../molecules/Modal';
+import BookDescription from '../organisms/BookDescription';
+import Header from '../organisms/Header';
+import BaseModal from '../organisms/Modal';
 import Template from './Template';
 
 const Book:React.FC = () => {

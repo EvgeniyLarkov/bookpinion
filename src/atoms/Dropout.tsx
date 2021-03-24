@@ -7,7 +7,7 @@ export interface DropoutInterface {
   readonly children: React.ReactNode;
 }
 
-const Dropout = styled.div<DropoutInterface>`
+const Dropout = styled.div.attrs((props) => ({ ...props }))<DropoutInterface>`
   position: absolute;
   width: ${(props) => ((props.fullWidth) ? 'min-content' : '100%')};
   max-height: 400px;
@@ -26,6 +26,15 @@ const DropoutBase: React.FC<DropoutInterface> = ({
   visible,
   children,
   fullWidth = false,
-}: DropoutInterface) => <Dropout visible={visible} fullWidth={fullWidth}>{children}</Dropout>;
+  ...attrs
+}: DropoutInterface) => (
+  <Dropout
+    {...attrs}
+    visible={visible}
+    fullWidth={fullWidth}
+  >
+    {children}
+  </Dropout>
+);
 
 export default DropoutBase;

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { uniqueId } from 'lodash';
 import { Card } from '../atoms';
 import { ExtendedBookInterface, ExtendedArticleInterface } from '../redux/ducks/types';
-import { BookPictureExtended } from '../organisms';
+import { BookPictureExtended } from '../molecules';
 import { isArticlesFetching, isBooksFetching } from '../utils/selectors';
 
 const Grid = styled.section`

@@ -31,6 +31,10 @@ export const booksStateSelector = (
   state: RootState,
 ): typeof state.books.state => state.books.state;
 
+export const booksIdsSelector = (
+  state: RootState,
+): typeof state.books.allIDs => state.books.allIDs;
+
 export const articlesDataSelector = (
   state: RootState,
 ): typeof state.articles.data => state.articles.data;
@@ -47,10 +51,6 @@ export const articlesErrorsSelector = (
   state: RootState,
 ): typeof state.articles.error => state.articles.error;
 
-export const booksIdsSelector = (
-  state: RootState,
-): typeof state.books.allIDs => state.books.allIDs;
-
 export const articlesIdsSelector = (
   state: RootState,
 ): typeof state.articles.allIDs => state.articles.allIDs;
@@ -58,6 +58,10 @@ export const articlesIdsSelector = (
 export const totalArticlesSelector = (
   state: RootState,
 ): typeof state.meta.totalArticles => state.meta.totalArticles;
+
+export const booksPreviewSelector = (
+  state: RootState,
+): typeof state.meta.booksPreview => state.meta.booksPreview;
 
 export const isUserAdmin = createSelector([profileStatusSelector],
   (state) => state === ProfileStatusStates.admin);

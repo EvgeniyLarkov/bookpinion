@@ -6,7 +6,7 @@ import FieldWithLabel from './FieldWithLabel';
 import { RootState } from '../redux/ducks';
 import { booksDataSelector } from '../utils/selectors';
 import ButtonBase from '../atoms/ButtonBase';
-import useAdminFunctions, { PartialBookInterface } from './BookPictureExtended/hooks/useAdminFunctions';
+import useAdminFunctions, { PartialBookInterface } from '../utils/hooks/useAdminFunctions';
 import { TextBase } from '../atoms';
 
 /* interface FormFromObjectInterface {

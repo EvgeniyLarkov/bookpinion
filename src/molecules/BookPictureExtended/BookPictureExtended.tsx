@@ -5,7 +5,7 @@ import { openModal } from '../../redux/ducks/modal';
 import { ExtendedBookInterface, ModalVariants } from '../../redux/ducks/types';
 import { AppDispatch } from '../../redux/store';
 import BookPictureBlock from './components';
-import useAdminFunctions from './hooks/useAdminFunctions';
+import useAdminFunctions from '../../utils/hooks/useAdminFunctions';
 
 export interface BookPictureExtendedInterface extends React.HTMLAttributes<HTMLDivElement> {
   book: ExtendedBookInterface<string>
@@ -22,7 +22,9 @@ export const BookPictureExtended: React.FC<BookPictureExtendedInterface> = (
   };
 
   const handleRemove = (): void => {
+    // eslint-disable-next-line no-alert
     const alert = window.alert('Are you sure to delete this book from collection?');
+    // eslint-disable-next-line no-console
     console.log(alert);
   };
 

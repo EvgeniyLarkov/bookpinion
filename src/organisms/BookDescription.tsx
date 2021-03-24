@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { TextBase, TitleBase } from '../atoms';
-import { BookPictureExtended } from '../organisms';
+import { BookPictureExtended } from '../molecules';
 import { RootState } from '../redux/ducks';
 import { getBookById } from '../redux/ducks/books';
 import { AppDispatch } from '../redux/store';

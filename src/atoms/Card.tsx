@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import TextBase from './TextBase';
 import C from '../validations/constants';
@@ -60,23 +61,26 @@ export interface CardProps{
 const Card: React.FC<CardProps> = ({
   label, username, article, reaction = C.MAX_BOOK_RATING / 2, ...props
 }
-: CardProps) => (
-  <Wrapper reaction={getReactionFromRating(reaction)} {...props}>
-    <TitleContainer>
-      <TextBase fontWeight={500} className="truncated">
-        {username}
-      </TextBase>
-      <TextBase fontWeight={500} p="0 8px">
-        about
-      </TextBase>
-      <TextBase fontStyle="italic" className="truncated" p="0 1px">
-        {label}
-      </TextBase>
-    </TitleContainer>
-    <Article>
-      {article}
-    </Article>
-  </Wrapper>
-);
+: CardProps) => {
+  const { t } = useTranslation();
+  return (
+    <Wrapper reaction={getReactionFromRating(reaction)} {...props}>
+      <TitleContainer>
+        <TextBase fontWeight={500} className="truncated">
+          {username}
+        </TextBase>
+        <TextBase fontWeight={500} p="0 8px">
+          {t('bookSection.about')}
+        </TextBase>
+        <TextBase fontStyle="italic" className="truncated" p="0 1px">
+          {label}
+        </TextBase>
+      </TitleContainer>
+      <Article>
+        {article}
+      </Article>
+    </Wrapper>
+  );
+};
 
 export default Card;

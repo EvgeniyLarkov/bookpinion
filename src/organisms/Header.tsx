@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { TitleBase } from '../atoms';
-import { IconBlock } from '../organisms';
+import { IconBlock } from '../molecules';
 
 const StyledHeader = styled.header`
     display: flex;

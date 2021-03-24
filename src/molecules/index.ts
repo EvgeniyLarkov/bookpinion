@@ -7,6 +7,3 @@ export { default as Tooltip } from './Tooltip';
 export { default as Notification } from './Notification';
 export { default as UpdateBookDataForm } from './UpdateBookDataForm';
 export { default as BookPictureExtended } from './BookPictureExtended';
-
-// TO-DO
-// Переименовать organisms c molecules

@@ -5,6 +5,9 @@
     "bookshelf": "Книжная полка",
     "register": "Регистрация",
     "hello": "Здравствуйте, {{name}}",
+    "bookSection": {
+        "about": "о"
+    },
     "inputBlock": {
         "title": "Поделись мнением!",
         "description": "О книге",

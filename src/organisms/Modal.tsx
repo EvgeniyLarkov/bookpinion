@@ -8,7 +8,7 @@ import { RootState } from '../redux/ducks';
 import { closeModal, ModalStates } from '../redux/ducks/modal';
 import { AppDispatch } from '../redux/store';
 import { ModalVariants } from '../redux/ducks/types';
-import { LoginForm, RegistrationForm, UpdateBookDataForm } from '../organisms';
+import { LoginForm, RegistrationForm, UpdateBookDataForm } from '../molecules';
 
 const Wrapper = styled.div`
   position: absolute;

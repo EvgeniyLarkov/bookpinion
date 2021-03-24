@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import useOuterFocus from '../utils/hooks/useOuterFocus';
 import Dropout from './Dropout';
 
 type OptionInterface = {
@@ -47,14 +48,13 @@ const SelectBase:React.FC<SelectInterface> = ({
     setVisible(!visible);
   };
 
-  const handleLeave = (ev: { relatedTarget: any; currentTarget: any; }) => {
-    if (!ev.currentTarget.contains(ev.relatedTarget)) {
-      setVisible(false);
-    }
-  };
+  const changeVisiblity = () => setVisible(false);
+
+  const { wrapperRef, handleLeave } = useOuterFocus(changeVisiblity);
 
   return (
     <Wrapper
+      ref={wrapperRef}
       onClick={handleClick}
       onBlur={handleLeave}
     >

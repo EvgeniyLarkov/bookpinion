@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { updateBookById } from '../../../redux/ducks/books';
-import { ExtendedBookInterface } from '../../../redux/ducks/types';
-import { AppDispatch } from '../../../redux/store';
-import { isUserAdmin } from '../../../utils/selectors';
+import { updateBookById } from '../../redux/ducks/books';
+import { ExtendedBookInterface } from '../../redux/ducks/types';
+import { AppDispatch } from '../../redux/store';
+import { isUserAdmin } from '../selectors';
 
 export type PartialBookInterface = Partial<ExtendedBookInterface<string>> & Pick<ExtendedBookInterface<string>, 'id'>;
 
@@ -21,6 +21,7 @@ const useAdminFunctions = (): UseAdminFunctionsInterface => {
   };
 
   const removeData = (data: PartialBookInterface) => {
+    // eslint-disable-next-line no-console
     console.log(data);
     // dispatch(updateBookById(data));
   };

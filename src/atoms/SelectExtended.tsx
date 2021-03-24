@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import InputBase from './InputBase';
 import TextBase from './TextBase';
 import Dropout from './Dropout';
+import useOuterFocus from '../utils/hooks/useOuterFocus';
 
 const Wrapper = styled.div`
   position: relative;
@@ -57,15 +58,11 @@ const SelectExtended:React.FC<SelectInterface> = ({
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState<{ [key: string]: OptionsType[] }>({});
 
-  const handleFocus = () => {
-    setVisible(true);
+  const handleFocus = (visibility: boolean) => () => {
+    setVisible(visibility);
   };
 
-  const handleLeave = (ev: { relatedTarget: any; currentTarget: any; }) => {
-    if (!ev.currentTarget.contains(ev.relatedTarget)) {
-      setVisible(false);
-    }
-  };
+  const { wrapperRef, handleLeave } = useOuterFocus(handleFocus(false));
 
   const handleFieldChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     setInput(ev.target.value);
@@ -94,8 +91,9 @@ const SelectExtended:React.FC<SelectInterface> = ({
 
   return (
     <Wrapper
-      onFocus={handleFocus}
+      onFocus={handleFocus(true)}
       onBlur={handleLeave}
+      ref={wrapperRef}
     >
       <Input
         value={input}

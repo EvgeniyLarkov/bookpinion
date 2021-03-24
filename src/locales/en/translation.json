@@ -5,6 +5,9 @@
     "bookshelf": "Bookshelf",
     "register": "Register",
     "hello": "Hello, {{name}}",
+    "bookSection": {
+        "about": "about"
+    },
     "inputBlock": {
         "title": "Make a statement!",
         "description": "About a book",
