@@ -8,7 +8,6 @@ import InputBlock from '../organisms/InputBlock';
 import Filter from '../organisms/Filter';
 import BookSection from '../organisms/BookSection';
 import C from '../validations/constants';
-import { Notification } from '../molecules';
 import { AppDispatch } from '../redux/store';
 import { RootState } from '../redux/ducks';
 import { fetchArticles } from '../redux/ducks/articles';
@@ -125,7 +124,6 @@ const Home: React.FC = () => {
         maxPage={maxPage}
         setPage={setPage}
       />
-      <Notification />
       <BaseModal />
     </Template>
   );

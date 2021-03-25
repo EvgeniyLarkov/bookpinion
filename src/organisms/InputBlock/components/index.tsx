@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { isEmpty } from 'lodash';
 import SendIcon from '@material-ui/icons/Send';
@@ -13,8 +13,12 @@ import { ArticleFields } from '../../../redux/ducks/types';
 import { OptionsType } from '../../../atoms/SelectExtended';
 import { UseRatingInterface } from '../hooks/useRating';
 
+// TO-DO
+// 1. Переделать Tooltip, вынести код с контейнером в Tooltip
+
 export interface InputBlockInterface extends UseRatingInterface {
   article: string;
+  isUserLogged: boolean;
   previewData: OptionsType[];
   normalizedErrors: { [x: string]: string[] };
   handleSetBook: (value: string) => void;
@@ -29,6 +33,7 @@ const InputBlockView: React.FC<InputBlockInterface> = (
     maxRating,
     minRating,
     deltaRating,
+    isUserLogged,
     handleSetRating,
     handleSendArticle,
     handleSetArticleText,
@@ -37,7 +42,10 @@ const InputBlockView: React.FC<InputBlockInterface> = (
     previewData,
   }: InputBlockInterface,
 ) => {
+  const [isTooltipVisible, setTooltipVisible] = useState(false);
   const { t } = useTranslation();
+  const handleMouseEvent = (visibility: boolean) => () => setTooltipVisible(visibility);
+
   return (
     <Outer>
       <Inner>
@@ -60,8 +68,8 @@ const InputBlockView: React.FC<InputBlockInterface> = (
             <SelectBase title={(
               <IconButton fontSize={50}>
                 {(rating >= deltaRating * 0.7 && <PostitveIcon />)
-                || (rating <= deltaRating * 0.3 && <NeutralIcon />)
-                || <NegativeIcon />}
+                || (rating <= deltaRating * 0.3 && <NegativeIcon />)
+                || <NeutralIcon />}
               </IconButton>
             )}
             >
@@ -76,13 +84,24 @@ const InputBlockView: React.FC<InputBlockInterface> = (
               </Option>
             </SelectBase>
           </div>
-          <IconButton
-            fontSize={50}
-            color="#1C9CE3"
-            onClick={handleSendArticle}
+          <div
+            className="container"
+            onMouseOver={handleMouseEvent(true)}
+            onMouseLeave={handleMouseEvent(false)}
+            onFocus={handleMouseEvent(true)}
           >
-            <SendIcon />
-          </IconButton>
+            <IconButton
+              fontSize={50}
+              color="#1C9CE3"
+              onClick={handleSendArticle}
+              disabled={!isUserLogged}
+            >
+              <SendIcon />
+            </IconButton>
+            <Tooltip visible={!isUserLogged && isTooltipVisible}>
+              {t('inputBlock.nonAuthorized')}
+            </Tooltip>
+          </div>
           {normalizedErrors[ArticleFields.article] !== undefined
           && (
           <Tooltip visible={!isEmpty(normalizedErrors[ArticleFields.article])}>

@@ -30,7 +30,7 @@ const StyledButton = styled(ButtonBase)<IconButtonProps>`
     }
 `;
 
-const IconButton:React.FC<IconButtonProps & React.HTMLAttributes<HTMLButtonElement>> = ({
+const IconButton:React.FC<IconButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
   children, fontSize, color, onClick, m, p, ...attrs
 }: IconButtonProps) => (
   <StyledButton {...attrs} fontSize={fontSize} color={color} onClick={onClick} m={m} p={p}>

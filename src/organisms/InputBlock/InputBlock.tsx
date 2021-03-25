@@ -5,7 +5,7 @@ import { OptionsType } from '../../atoms/SelectExtended';
 import { publishArticle, setArticleError } from '../../redux/ducks/articles';
 import { ArticleFields } from '../../redux/ducks/types';
 import { AppDispatch } from '../../redux/store';
-import { getNormilizedArticleErrors, booksPreviewSelector } from '../../utils/selectors';
+import { getNormilizedArticleErrors, booksPreviewSelector, isUserLogged } from '../../utils/selectors';
 import InputBlockView from './components';
 import useRating from './hooks/useRating';
 import validate from '../../validations';
@@ -24,6 +24,7 @@ export const InputBlock: React.FC = () => {
 
   const normalizedErrors = useSelector(getNormilizedArticleErrors);
   const preview = useSelector(booksPreviewSelector);
+  const isLogged = useSelector(isUserLogged);
 
   const handleSetArticleText = (ev: React.ChangeEvent<HTMLTextAreaElement>) => {
     setArticle(ev.target.value);
@@ -61,16 +62,17 @@ export const InputBlock: React.FC = () => {
   return (
     <InputBlockView
       article={article}
-      handleSetArticleText={handleSetArticleText}
-      handleSendArticle={handleSendArticle}
-      handleSetBook={handleSetBook}
-      normalizedErrors={normalizedErrors}
       rating={rating}
       maxRating={maxRating}
       minRating={minRating}
-      handleSetRating={handleSetRating}
       deltaRating={deltaRating}
       previewData={previewData}
+      isUserLogged={isLogged}
+      normalizedErrors={normalizedErrors}
+      handleSetRating={handleSetRating}
+      handleSetArticleText={handleSetArticleText}
+      handleSendArticle={handleSendArticle}
+      handleSetBook={handleSetBook}
     />
   );
 };

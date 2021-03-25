@@ -39,6 +39,15 @@ export enum ErrorsStates {
   'full',
 }
 
+export enum NotificationStates {
+  'idle',
+  'full',
+}
+
+export enum NotificationIds {
+  'articleAdded' = 'articleAdded',
+}
+
 export enum ModalVariants {
   'login',
   'registration',
@@ -141,7 +150,17 @@ export type ServerError = {
   [id: string]: string
 };
 
+export type Notification = {
+  msg: string
+  [id: string]: string
+};
+
 export interface ErrorsInterface {
   state: ErrorsStates
   data: ServerError[]
+}
+
+export interface NotificationsInterface {
+  state: NotificationStates
+  data: Notification[]
 }

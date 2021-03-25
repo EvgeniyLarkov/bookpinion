@@ -2,7 +2,12 @@ import { createSelector } from 'reselect';
 import { RootState } from '../redux/ducks';
 import {
   ArticlePublishStates,
-  ArticlesStates, BooksStates, ProfileStates, ProfileStatusStates,
+  ArticlesStates,
+  BooksStates,
+  ErrorsStates,
+  ProfileStates,
+  ProfileStatusStates,
+  NotificationStates,
 } from '../redux/ducks/types';
 import C from '../validations/constants';
 import { normalizeValidationErrors } from './index';
@@ -63,8 +68,27 @@ export const booksPreviewSelector = (
   state: RootState,
 ): typeof state.meta.booksPreview => state.meta.booksPreview;
 
+export const errorsStateSelector = (
+  state: RootState,
+): typeof state.errors.state => state.errors.state;
+
+export const errorsDataSelector = (
+  state: RootState,
+): typeof state.errors.data => state.errors.data;
+
+export const notificationsStateSelector = (
+  state: RootState,
+): typeof state.notifications.state => state.notifications.state;
+
+export const notificationsDataSelector = (
+  state: RootState,
+): typeof state.notifications.data => state.notifications.data;
+
 export const isUserAdmin = createSelector([profileStatusSelector],
   (state) => state === ProfileStatusStates.admin);
+
+export const isUserLogged = createSelector([profileStateSelector],
+  (state) => state === ProfileStates.logged);
 
 export const isProfileFetching = createSelector([profileStateSelector],
   (state) => state === ProfileStates.pending);
@@ -86,6 +110,12 @@ export const isArticlePublished = createSelector([articlesPublishStateSelector],
 
 export const isBooksFetching = createSelector([booksStateSelector],
   (state) => state === BooksStates.pending);
+
+export const isErrorsFull = createSelector([errorsStateSelector],
+  (state) => state === ErrorsStates.full);
+
+export const isNotificationsFull = createSelector([notificationsStateSelector],
+  (state) => state === NotificationStates.full);
 
 export const getArticles = createSelector([articlesDataSelector, articlesIdsSelector],
   (data, ids) => ids.map((id) => data[id]));

@@ -1,12 +1,18 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { IconButton, TextBase } from '../atoms';
-import { RootState } from '../redux/ducks';
 import { AppDispatch } from '../redux/store';
 import { removeError } from '../redux/ducks/errors';
-import { ErrorsStates } from '../redux/ducks/types';
+import { removeNotification } from '../redux/ducks/notifications';
+import {
+  errorsDataSelector,
+  isErrorsFull,
+  isNotificationsFull,
+  notificationsDataSelector,
+} from '../utils/selectors';
 
 const Wrapper = styled.div`
     position: fixed;
@@ -26,29 +32,59 @@ const Item = styled.div`
 `;
 
 const Notification: React.FC = () => {
-  const { data, state } = useSelector(({ errors }: RootState) => errors);
+  const { t } = useTranslation();
+
+  const errors = useSelector(errorsDataSelector);
+  const notifications = useSelector(notificationsDataSelector);
+  const isErrorsNotEmpty = useSelector(isErrorsFull);
+  const isNotificationsNotEmpty = useSelector(isNotificationsFull);
+
   const dispatch: AppDispatch = useDispatch();
 
   const notificationRef = useRef<{ [id: string]: number }>({});
 
   useEffect(() => {
-    data.forEach(({ id }) => {
-      if (!notificationRef.current[id] !== undefined) {
+    errors.forEach(({ id }) => {
+      if (notificationRef.current[id] === undefined) {
         const timeoutId = setTimeout(() => dispatch(removeError({ id })), 5000);
         notificationRef.current[id] = timeoutId;
       }
     });
-  }, [data]);
+  }, [errors]);
+
+  useEffect(() => {
+    notifications.forEach(({ id }) => {
+      if (notificationRef.current[id] === undefined) {
+        const timeoutId = setTimeout(() => dispatch(removeNotification({ id })), 5000);
+        notificationRef.current[id] = timeoutId;
+      }
+    });
+  }, [notifications]);
 
   const closeError = (id: string) => () => {
     clearTimeout(notificationRef.current[id]);
     dispatch(removeError({ id }));
   };
 
+  const closeNotification = (id: string) => () => {
+    clearTimeout(notificationRef.current[id]);
+    dispatch(removeNotification({ id }));
+  };
+
   return (
-    (state === ErrorsStates.full) ? (
+    (isErrorsNotEmpty || isNotificationsNotEmpty) ? (
       <Wrapper>
-        {data.map((value) => (
+        {notifications.map((value) => (
+          <Item key={value.id}>
+            <TextBase>
+              {t(`notifications.${value.msg}`)}
+            </TextBase>
+            <IconButton onClick={closeNotification(value.id)}>
+              <CancelIcon />
+            </IconButton>
+          </Item>
+        ))}
+        {errors.map((value) => (
           <Item key={value.id}>
             <TextBase>
               {value.msg}

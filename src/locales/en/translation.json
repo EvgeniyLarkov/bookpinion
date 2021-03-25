@@ -11,7 +11,8 @@
     "inputBlock": {
         "title": "Make a statement!",
         "description": "About a book",
-        "bookAdvice": "choose a book"
+        "bookAdvice": "choose a book",
+        "nonAuthorized": "You must log in to perform this action"
     },
     "loginForm": {
         "usernamePh": "username",
@@ -37,6 +38,9 @@
         "isAlphanumeric": "{{field}} should only contain alphanumeric characters",
         "isLength": "{{field}} length should be between {{min}} and {{max}} characters",
         "notMatch": "{{field1}} does not match {{field2}}"
+    },
+    "notifications": {
+        "articleAdded": "Review was successfully added"
     },
     "bookSectionLabel":" Top books & opinions:"
 }

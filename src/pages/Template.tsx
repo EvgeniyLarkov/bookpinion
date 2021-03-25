@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Notification } from '../molecules';
 
 export interface TemplateInterface {
   children: React.ReactNode;
@@ -31,6 +32,7 @@ const Template:React.FC<TemplateInterface> = ({ children }: TemplateInterface) =
     <Wrapper>
       {children}
     </Wrapper>
+    <Notification />
   </Body>
 );
 
